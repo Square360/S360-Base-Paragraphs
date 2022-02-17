@@ -7,7 +7,7 @@ dependencies:
   - drupal:field_group
   - drupal:media
   - drupal:media_library
-  - drupal/media_library_edit
+  - drupal:media_library_edit
   - drupal:views
   - drupal:viewsreference
   - drupal:webform
