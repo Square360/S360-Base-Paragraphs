@@ -1,0 +1,102 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.view_block.field_header
+    - field.field.paragraph.view_block.field_view
+    - paragraphs.paragraphs_type.view_block
+  module:
+    - field_group
+    - s360_advanced_header_field
+    - viewsreference
+third_party_settings:
+  field_group:
+    group_tabs_content_group:
+      children:
+        - group_header
+        - group_content
+        - group_options
+      label: 'Tabs - Content Group'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: null
+    group_header:
+      children:
+        - field_header
+      label: Header
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_content:
+      children:
+        - field_view
+      label: Content
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_options:
+      children:
+        - status
+      label: Options
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 22
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: paragraph.view_block.default
+targetEntityType: paragraph
+bundle: view_block
+mode: default
+content:
+  field_header:
+    type: advanced_header_field
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_view:
+    type: viewsreference_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 23
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true

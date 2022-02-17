@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.header.field_header
+    - paragraphs.paragraphs_type.header
+  module:
+    - s360_advanced_header_field
+id: paragraph.header.default
+targetEntityType: paragraph
+bundle: header
+mode: default
+content:
+  field_header:
+    weight: 0
+    label: hidden
+    settings:
+      tag: header
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: advanced_header_field_string_markup
+    region: content
+hidden: {  }

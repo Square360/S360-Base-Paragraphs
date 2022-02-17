@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.html_content.field_body
+    - field.field.paragraph.html_content.field_header
+    - paragraphs.paragraphs_type.html_content
+  module:
+    - s360_advanced_header_field
+    - text
+id: paragraph.html_content.default
+targetEntityType: paragraph
+bundle: html_content
+mode: default
+content:
+  field_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_header:
+    type: advanced_header_field_string_markup
+    label: above
+    settings:
+      tag: header
+      trim_length: '80'
+      url_only: ''
+      url_plain: ''
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

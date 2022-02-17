@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.webform.field_header
+    - field.field.paragraph.webform.field_webform
+    - paragraphs.paragraphs_type.webform
+  module:
+    - s360_advanced_header_field
+    - webform
+id: paragraph.webform.preview
+targetEntityType: paragraph
+bundle: webform
+mode: preview
+content:
+  field_header:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: advanced_header_field_string
+    region: content
+  field_webform:
+    type: webform_entity_reference_link
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      label: 'Go to [webform:title] webform'
+      dialog: normal
+      attributes: {  }
+    third_party_settings: {  }
+hidden: {  }

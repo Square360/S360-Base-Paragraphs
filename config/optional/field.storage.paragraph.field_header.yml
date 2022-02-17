@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - s360_advanced_header_field
+id: paragraph.field_header
+field_name: field_header
+entity_type: paragraph
+type: advanced_header_field
+settings:
+  custom_styles: ''
+module: s360_advanced_header_field
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

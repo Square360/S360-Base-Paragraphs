@@ -1,0 +1,16 @@
+name: 'S360 Base Paragraphs'
+description: 'Adds a base set of paragraphs.'
+type: module
+package: 'Paragraphs'
+dependencies:
+  - drupal:paragraphs
+  - drupal:field_group
+  - drupal:media
+  - drupal:media_library
+  - drupal/media_library_edit
+  - drupal:views
+  - drupal:viewsreference
+  - drupal:webform
+  - drupal:allowed_formats
+  - s360_advanced_header_field
+core_version_requirement: ^8 || ^9

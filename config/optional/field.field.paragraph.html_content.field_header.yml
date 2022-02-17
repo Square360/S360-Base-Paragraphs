@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_header
+    - paragraphs.paragraphs_type.html_content
+  module:
+    - s360_advanced_header_field
+id: paragraph.html_content.field_header
+field_name: field_header
+entity_type: paragraph
+bundle: html_content
+label: Header
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    attributes: {  }
+    text:
+      heading_tag: h2
+      title: ''
+      subtitle: ''
+    subtitle: ''
+    uri: 'route:<nolink>'
+    title: ''
+    options:
+      heading_tag: h2
+      visually_hidden: 0
+      size: ''
+      styles: {  }
+      new_window: 0
+default_value_callback: ''
+settings:
+  link_type: '17'
+  title: '2'
+  allowed_tags:
+    h3: h3
+    h4: h4
+    h5: h5
+    h6: h6
+    h2: 0
+field_type: advanced_header_field
