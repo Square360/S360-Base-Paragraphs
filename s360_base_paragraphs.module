@@ -62,40 +62,55 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
       /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
       $paragraph = $variables['paragraph'];
 
-      $field_view = $paragraph->get('field_view')->first()->getValue();
-      $view_target_id = $field_view['target_id'];
-      $view_display_id = $field_view['display_id'];
-      $view = \Drupal\views\Views::getView($view_target_id);
+      if ($paragraph->hasField('field_view') && $paragraph->get('field_view')->count()) {
+        $field_view = $paragraph->get('field_view')->first()->getValue();
+        $view_target_id = $field_view['target_id'];
+        $view_display_id = $field_view['display_id'];
 
-      $view->setDisplay($view_display_id);
-      $display_obj = $view->getDisplay();
-      $display_name = $display_obj->display['display_title'];
+        /** @var \Drupal\views\ViewExecutable $view */
+        $view = \Drupal\views\Views::getView($view_target_id);
 
-      $variables['content']['field_view'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => 'field field--name-field-view field--type-string field--label-inline',
-        ],
-        'child' => [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => 'View',
-            '#attributes' => [
-              'class' => 'field__label'
+        if ($view) {
+          $view->setDisplay($view_display_id);
+          $display_obj = $view->getDisplay();
+          $display_name = $display_obj->display['display_title'];
+          $field_item_text = $view->storage->label() . ' (' . $display_name . ')';
+        }
+        else {
+          $field_item_text = 'Problem loading the view.';
+        }
+
+        $variables['content']['field_view'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => [
+              'field',
+              'field--name-field-view',
+              'field--type-string',
+              'field--label-inline',
             ],
           ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => $view->storage->label() . ' (' . $display_name . ')',
-            '#attributes' => [
-              'class' => 'field__item'
+          'child' => [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => 'View',
+              '#attributes' => [
+                'class' => 'field__label'
+              ],
+            ],
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => $field_item_text,
+              '#attributes' => [
+                'class' => 'field__item'
+              ],
             ],
           ],
-        ],
-      ];
+        ];
+      }
     }
   }
 }
@@ -103,41 +118,59 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
 /**
  * Implements hook_preprocess_paragraph() for webform.
  */
-function kmha_mediteran_preprocess_paragraph__webform(&$variables) {
+function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
     if (isset($variables['paragraph'])) {
       /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
       $paragraph = $variables['paragraph'];
 
-      $field_webform = $paragraph->get('field_webform')->first()->getValue();
-      $wf_target_id = $field_webform['target_id'];
-      $wf = \Drupal\webform\Entity\Webform::load($wf_target_id);
+      if ($paragraph->hasField('field_webform') && $paragraph->get('field_webform')->count()) {
+        $field_webform = $paragraph->get('field_webform')->first()->getValue();
+        $wf_target_id = $field_webform['target_id'];
 
-      $variables['content']['field_webform'] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => 'field field--name-field-webform field--type-string field--label-inline',
-        ],
-        'child' => [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => 'Webform',
-            '#attributes' => [
-              'class' => 'field__label'
+        /** @var \Drupal\webform\Entity\Webform $wf */
+        $wf = \Drupal\webform\Entity\Webform::load($wf_target_id);
+
+        if ($wf) {
+          $field_item_text = $wf->label() . ($wf->getDescription()
+            ? '<br> ' . $wf->getDescription()
+            : '');
+        }
+        else {
+          $field_item_text = 'Problem loading the webform.';
+        }
+
+        $variables['content']['field_webform'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => [
+              'field',
+              'field--name-field-webform',
+              'field--type-string',
+              'field--label-inline',
             ],
           ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => $wf->label(),
-            '#attributes' => [
-              'class' => 'field__item'
+          'child' => [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => 'Webform',
+              '#attributes' => [
+                'class' => 'field__label'
+              ],
+            ],
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => $field_item_text,
+              '#attributes' => [
+                'class' => 'field__item'
+              ],
             ],
           ],
-        ],
-      ];
+        ];
+      }
     }
   }
 }
