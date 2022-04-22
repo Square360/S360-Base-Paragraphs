@@ -22,6 +22,6 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: advanced_header_field_string_markup
+    type: advanced_header_field_html
     region: content
 hidden: {  }

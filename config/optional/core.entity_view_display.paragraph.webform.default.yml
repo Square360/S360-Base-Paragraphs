@@ -24,7 +24,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: advanced_header_field_string_markup
+    type: advanced_header_field_string
     region: content
   field_webform:
     type: webform_entity_reference_entity_view
