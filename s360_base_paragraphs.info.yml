@@ -4,6 +4,7 @@ type: module
 package: 'Paragraphs'
 dependencies:
   - drupal:paragraphs
+  - drupal:paragraphs_library
   - drupal:field_group
   - drupal:media
   - drupal:media_library
