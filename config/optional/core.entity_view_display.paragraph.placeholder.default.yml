@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.placeholder.field_body
+    - field.field.paragraph.placeholder.field_title
+    - paragraphs.paragraphs_type.placeholder
+  module:
+    - text
+id: paragraph.placeholder.default
+targetEntityType: paragraph
+bundle: placeholder
+mode: default
+content:
+  field_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }
