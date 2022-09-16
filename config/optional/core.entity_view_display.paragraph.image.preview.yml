@@ -4,11 +4,24 @@ dependencies:
   config:
     - core.entity_view_mode.paragraph.preview
     - field.field.paragraph.image.field_erm_image
+    - image.style.media_library
     - paragraphs.paragraphs_type.image
+  module:
+    - media
 id: paragraph.image.preview
 targetEntityType: paragraph
 bundle: image
 mode: preview
-content: {  }
-hidden:
-  field_erm_image: true
+content:
+  field_erm_image:
+    type: media_thumbnail
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: media_library
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }
