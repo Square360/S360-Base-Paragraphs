@@ -17,6 +17,7 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
     case 'help.page.s360_base_paragraphs':
       $paragraphs = [
         'cta_link' => t('CTA Link'),
+        'curated_content' => t('Curated Content'),
         'document_list' => t('Document List'),
         'embed_code' => t('Embed Code'),
         'header' => t('Header'),
@@ -66,16 +67,19 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
 function s360_base_paragraphs_preprocess_paragraph(&$variables) {
   $elements = $variables['elements'];
 
-  if (isset($elements['#paragraph'])) {
-    /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
-    $paragraph = $elements['#paragraph'];
-    $paragraph_bundle = $paragraph->bundle();
-    $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
+  /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_bundle = $paragraph->bundle();
+  $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
+  $paragraph_view_mode = $elements['#view_mode'];
 
-    $variables['attributes']['class'] = [];
-    $variables['attributes']['id'] = 'paragraph-' . $paragraph_bundle_safe . '-' . $paragraph->id();
-    $variables['attributes']['data-js'] = $paragraph_bundle_safe;
-  }
+  $variables['attributes']['class'] = [];
+  $variables['attributes']['class'][] = 'paragraph';
+  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_bundle");
+  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_view_mode");
+
+  $variables['attributes']['id'] = 'paragraph-' . $paragraph_bundle_safe . '-' . $paragraph->id();
+  $variables['attributes']['data-js'] = $paragraph_bundle_safe;
 }
 
 /**
@@ -272,7 +276,6 @@ function s360_base_paragraphs_preprocess_paragraph__embed_code(&$variables) {
     $variables['embed_code'] = Markup::create($embedded_media['second']);
   }
 }
-
 
 /**
  * Implements hook_preprocess_paragraph__document_list().
