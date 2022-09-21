@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.embed_code.field_embedded_media
+    - paragraphs.paragraphs_type.embed_code
+  module:
+    - double_field
+id: paragraph.embed_code.preview
+targetEntityType: paragraph
+bundle: embed_code
+mode: preview
+content:
+  field_embedded_media:
+    type: double_field_unformatted_list
+    label: above
+    settings:
+      first:
+        format_type: medium
+        link: false
+        hidden: false
+        key: false
+        decimal_separator: .
+        thousand_separator: ''
+        scale: 2
+      second:
+        format_type: medium
+        link: false
+        hidden: true
+        decimal_separator: .
+        thousand_separator: ''
+        scale: 2
+      inline: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden: {  }

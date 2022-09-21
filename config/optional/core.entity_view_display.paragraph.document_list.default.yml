@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.document_list.field_document_display_mode
+    - field.field.paragraph.document_list.field_erm_documents
+    - paragraphs.paragraphs_type.document_list
+id: paragraph.document_list.default
+targetEntityType: paragraph
+bundle: document_list
+mode: default
+content:
+  field_erm_documents:
+    type: entity_reference_entity_id
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_document_display_mode: true

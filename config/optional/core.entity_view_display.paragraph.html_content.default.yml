@@ -22,7 +22,7 @@ content:
     region: content
   field_header:
     type: advanced_header_field_html
-    label: above
+    label: hidden
     settings:
       tag: header
       trim_length: '80'

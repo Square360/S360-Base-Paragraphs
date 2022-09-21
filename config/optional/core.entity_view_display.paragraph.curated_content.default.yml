@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.curated_content.field_ern_content
+    - field.field.paragraph.curated_content.field_view_mode
+    - paragraphs.paragraphs_type.curated_content
+id: paragraph.curated_content.default
+targetEntityType: paragraph
+bundle: curated_content
+mode: default
+content: {  }
+hidden:
+  field_ern_content: true
+  field_view_mode: true
