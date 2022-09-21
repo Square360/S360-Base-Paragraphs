@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.html_content.field_header
     - paragraphs.paragraphs_type.html_content
   module:
+    - s360_advanced_header_field
     - text
 id: paragraph.html_content.preview
 targetEntityType: paragraph
@@ -18,7 +19,13 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
+  field_header:
+    type: advanced_header_field_string
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
     weight: 0
     region: content
-hidden:
-  field_header: true
+hidden: {  }

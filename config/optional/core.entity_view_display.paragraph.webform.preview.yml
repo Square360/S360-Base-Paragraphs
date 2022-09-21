@@ -8,27 +8,17 @@ dependencies:
     - paragraphs.paragraphs_type.webform
   module:
     - s360_advanced_header_field
-    - webform
 id: paragraph.webform.preview
 targetEntityType: paragraph
 bundle: webform
 mode: preview
 content:
   field_header:
-    weight: 0
+    type: advanced_header_field_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: advanced_header_field_string
+    weight: 0
     region: content
-  field_webform:
-    type: webform_entity_reference_link
-    weight: 1
-    region: content
-    label: hidden
-    settings:
-      label: 'Go to [webform:title] webform'
-      dialog: normal
-      attributes: {  }
-    third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_webform: true

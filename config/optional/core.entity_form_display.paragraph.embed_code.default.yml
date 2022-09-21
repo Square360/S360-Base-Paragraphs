@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.embed_code.field_embedded_media
+    - paragraphs.paragraphs_type.embed_code
+  module:
+    - double_field
+id: paragraph.embed_code.default
+targetEntityType: paragraph
+bundle: embed_code
+mode: default
+content:
+  field_embedded_media:
+    type: double_field
+    weight: 2
+    region: content
+    settings:
+      first:
+        type: select
+        label_display: block
+        size: 30
+        placeholder: ''
+        label: Ok
+        cols: 10
+        rows: 5
+      second:
+        type: textarea
+        label_display: block
+        size: 30
+        placeholder: ''
+        label: Ok
+        cols: 10
+        rows: 5
+      inline: false
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

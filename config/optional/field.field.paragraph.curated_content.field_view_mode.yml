@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_view_mode
+    - paragraphs.paragraphs_type.curated_content
+  module:
+    - options
+id: paragraph.curated_content.field_view_mode
+field_name: field_view_mode
+entity_type: paragraph
+bundle: curated_content
+label: 'View Mode'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

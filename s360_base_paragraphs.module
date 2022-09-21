@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_help().
@@ -14,6 +15,21 @@ use Drupal\Component\Utility\Html;
 function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     case 'help.page.s360_base_paragraphs':
+      $paragraphs = [
+        'cta_link' => t('CTA Link'),
+        'curated_content' => t('Curated Content'),
+        'document_list' => t('Document List'),
+        'embed_code' => t('Embed Code'),
+        'header' => t('Header'),
+        'html_content' => t('HTML Content'),
+        'image' => t('Image'),
+        'link_list' => t('Link List'),
+        'placeholder' => t('Placeholder'),
+        'video' => t('Video'),
+        'view_block' => t('View Block'),
+        'webform' => t('Webform'),
+      ];
+
       $output = '';
 
       $output .= '<h3>' . t('About') . '</h3>';
@@ -22,14 +38,24 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
       $output .= '<p>&nbsp;</p>';
 
       $output .= '<h3>' . t('Paragraph types') . '</h3>';
-      $output .= '<ul>';
-      $output .= '<li>' . t('Header') . '</li>';
-      $output .= '<li>' . t('HTML Content') . '</li>';
-      $output .= '<li>' . t('Image') . '</li>';
-      $output .= '<li>' . t('Video') . '</li>';
-      $output .= '<li>' . t('View Block') . '</li>';
-      $output .= '<li>' . t('Webform') . '</li>';
-      $output .= '</ul>';
+      $output .= '<dl>';
+
+      foreach ($paragraphs as $paragraph_key => $paragraph_label) {
+        $paragraph_config = \Drupal::config("paragraphs.paragraphs_type.$paragraph_key");
+
+        // The paragraph is still configured (not deleted).
+        if (!empty($paragraph_config->getRawData())) {
+          $output .= '<dt><strong>' . $paragraph_config->get('label') . '</strong></dt>';
+          $output .= '<dd>' . $paragraph_config->get('description') . '</dd>';
+        }
+        // The paragraph was deleted.
+        else {
+          $output .= "<dt><strong>$paragraph_label</strong></dt>";
+          $output .= "<dd>This paragraph was removed.</dd>";
+        }
+      }
+
+      $output .= '</dl>';
 
       return $output;
   }
@@ -41,16 +67,19 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
 function s360_base_paragraphs_preprocess_paragraph(&$variables) {
   $elements = $variables['elements'];
 
-  if (isset($elements['#paragraph'])) {
-    /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
-    $paragraph = $elements['#paragraph'];
-    $paragraph_bundle = $paragraph->bundle();
-    $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
+  /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_bundle = $paragraph->bundle();
+  $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
+  $paragraph_view_mode = $elements['#view_mode'];
 
-    $variables['attributes']['class'] = [];
-    $variables['attributes']['id'] = 'paragraph-' . $paragraph_bundle_safe . '-' . $paragraph->id();
-    $variables['attributes']['data-js'] = $paragraph_bundle_safe;
-  }
+  $variables['attributes']['class'] = [];
+  $variables['attributes']['class'][] = 'paragraph';
+  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_bundle");
+  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_view_mode");
+
+  $variables['attributes']['id'] = 'paragraph-' . $paragraph_bundle_safe . '-' . $paragraph->id();
+  $variables['attributes']['data-js'] = $paragraph_bundle_safe;
 }
 
 /**
@@ -170,6 +199,124 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
             ],
           ],
         ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph() for curated_content.
+ */
+function s360_base_paragraphs_preprocess_paragraph__curated_content(&$variables) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_ern_content')) {
+    $field_ern_content = $paragraph->get('field_ern_content');
+
+    if ($field_ern_content->count()) {
+      $node_id = $field_ern_content->first()->getString();
+    }
+  }
+
+  if ($paragraph->hasField('field_view_mode')) {
+    $field_view_mode = $paragraph->get('field_view_mode');
+
+    if ($field_view_mode->count()) {
+      $view_mode = $field_view_mode->first()->getString();
+    }
+  }
+
+  if ($field_ern_content && $field_view_mode) {
+    /** @var \Drupal\node\Entity\Node $node */
+    $node = $entity_type_manager->getStorage('node')->load($node_id);
+
+    // Make sure it's a valid node and we have the proper access to view it.
+    if ($node && $node->access('view')) {
+      $render_controller = $entity_type_manager->getViewBuilder('node');
+      $variables['curated_node'] = $render_controller->view($node, $view_mode);
+    }
+  }
+  else {
+    $variables['curated_node'] = '';
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph() for cta_link.
+ */
+function s360_base_paragraphs_preprocess_paragraph__cta_link(&$variables) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_cta_link_style')) {
+    $field_cta_link_style = $paragraph->get('field_cta_link_style');
+
+    if ($field_cta_link_style->count()) {
+      $variables['attributes']['class'][] = 'paragraph--cta-link-' . $field_cta_link_style->getString();
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph() for embed_code.
+ */
+function s360_base_paragraphs_preprocess_paragraph__embed_code(&$variables) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_embedded_media')) {
+    $field_embedded_media = $paragraph->get('field_embedded_media');
+
+    $embedded_media = $field_embedded_media->first()->getValue();
+
+    $variables['attributes']['class'][] = 'paragraph--embed-type-' . Html::getClass($embedded_media['first']);
+    $variables['embed_code'] = Markup::create($embedded_media['second']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph__document_list().
+ */
+function s360_base_paragraphs_preprocess_paragraph__document_list(&$variables) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+
+  if ($paragraph->hasField('field_erm_documents')) {
+    $field_erm_documents = $paragraph->get('field_erm_documents');
+
+    if ($field_erm_documents->count()) {
+      $media_ids = explode(',', $field_erm_documents->getString());
+    }
+  }
+
+  if ($paragraph->hasField('field_document_display_mode')) {
+    $field_document_display_mode = $paragraph->get('field_document_display_mode');
+
+    if ($field_document_display_mode->count()) {
+      $document_display_mode = $field_document_display_mode->first()->getString();
+
+      if ($document_display_mode === 'default') {
+        $variables['attributes']['class'][] = 'paragraph--list-as-grid';
+      }
+    }
+  }
+
+  if ($field_erm_documents && $field_document_display_mode) {
+    $variables['documents'] = [];
+
+    foreach ($media_ids as $media_id) {
+      /** @var \Drupal\media\Entity\Media $media */
+      $media = $entity_type_manager->getStorage('media')->load(trim($media_id));
+
+      // Make sure it's a media and we have the proper access to view it.
+      if ($media && $media->access('view')) {
+        $render_controller = $entity_type_manager->getViewBuilder('media');
+        $variables['documents'][] = $render_controller->view($media, $document_display_mode);
       }
     }
   }

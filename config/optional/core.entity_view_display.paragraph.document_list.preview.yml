@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.document_list.field_document_display_mode
+    - field.field.paragraph.document_list.field_erm_documents
+    - paragraphs.paragraphs_type.document_list
+  module:
+    - options
+id: paragraph.document_list.preview
+targetEntityType: paragraph
+bundle: document_list
+mode: preview
+content:
+  field_document_display_mode:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_erm_documents:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

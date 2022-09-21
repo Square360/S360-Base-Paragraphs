@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_document_display_mode
+    - paragraphs.paragraphs_type.document_list
+  module:
+    - options
+id: paragraph.document_list.field_document_display_mode
+field_name: field_document_display_mode
+entity_type: paragraph
+bundle: document_list
+label: 'Document Display Mode'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: inline
+default_value_callback: ''
+settings: {  }
+field_type: list_string

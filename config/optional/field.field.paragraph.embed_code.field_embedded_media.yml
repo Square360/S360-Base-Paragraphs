@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_embedded_media
+    - paragraphs.paragraphs_type.embed_code
+  module:
+    - double_field
+id: paragraph.embed_code.field_embedded_media
+field_name: field_embedded_media
+entity_type: paragraph
+bundle: embed_code
+label: 'Embedded Media'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  first:
+    label: Source
+    list: true
+    allowed_values: {  }
+    max: null
+    min: null
+    required: true
+    on_label: 'On'
+    off_label: 'Off'
+  second:
+    label: 'Embed Code'
+    list: false
+    allowed_values: {  }
+    max: null
+    min: null
+    required: true
+    on_label: 'On'
+    off_label: 'Off'
+field_type: double_field
