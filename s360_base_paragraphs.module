@@ -8,6 +8,8 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Render\Markup;
+use Drupal\views\Views;
+use Drupal\webform\Entity\Webform;
 
 /**
  * Implements hook_help().
@@ -97,7 +99,7 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
         $view_display_id = $field_view['display_id'];
 
         /** @var \Drupal\views\ViewExecutable $view */
-        $view = \Drupal\views\Views::getView($view_target_id);
+        $view = Views::getView($view_target_id);
 
         if ($view) {
           $view->setDisplay($view_display_id);
@@ -126,7 +128,7 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
               '#tag' => 'div',
               '#value' => 'View',
               '#attributes' => [
-                'class' => 'field__label'
+                'class' => 'field__label',
               ],
             ],
             [
@@ -134,7 +136,7 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
               '#tag' => 'div',
               '#value' => $field_item_text,
               '#attributes' => [
-                'class' => 'field__item'
+                'class' => 'field__item',
               ],
             ],
           ],
@@ -158,7 +160,7 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
         $wf_target_id = $field_webform['target_id'];
 
         /** @var \Drupal\webform\Entity\Webform $wf */
-        $wf = \Drupal\webform\Entity\Webform::load($wf_target_id);
+        $wf = Webform::load($wf_target_id);
 
         if ($wf) {
           $field_item_text = $wf->label() . ($wf->getDescription()
@@ -186,7 +188,7 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
               '#tag' => 'div',
               '#value' => 'Webform',
               '#attributes' => [
-                'class' => 'field__label'
+                'class' => 'field__label',
               ],
             ],
             [
@@ -194,7 +196,7 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
               '#tag' => 'div',
               '#value' => $field_item_text,
               '#attributes' => [
-                'class' => 'field__item'
+                'class' => 'field__item',
               ],
             ],
           ],
