@@ -15,4 +15,4 @@ dependencies:
   - drupal:viewsreference
   - drupal:webform
   - s360_advanced_header_field
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
