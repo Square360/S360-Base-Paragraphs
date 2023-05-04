@@ -75,13 +75,6 @@ function s360_base_paragraphs_preprocess_paragraph(&$variables) {
   $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
   $paragraph_view_mode = $elements['#view_mode'];
 
-  // Layout Paragraphs v2 doesn't work with custom IDs and it needs Drupals
-  // base classes.
-  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $variables['attributes']['id'] = 'paragraph-' . $paragraph_bundle_safe . '-' . $paragraph->id();
-    $variables['attributes']['class'] = [];
-  }
-
   $variables['attributes']['class'][] = 'paragraph';
   $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_bundle");
   $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_view_mode");
