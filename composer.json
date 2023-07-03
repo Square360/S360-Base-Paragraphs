@@ -2,27 +2,51 @@
     "name": "square360/s360_base_paragraphs",
     "description": "Square360 Base Paragraphs",
     "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
     "keywords": [
         "Drupal",
         "Paragraph"
     ],
-    "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
-    "version": "3.0.3",
-    "scripts": {
-        "code-sniff": [
-            "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets .",
-            "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets ."
-        ]
+    "require": {
+        "drupal/allowed_formats": "^2.0",
+        "drupal/double_field": "^4.1",
+        "drupal/field_group": "^3.4",
+        "drupal/media_library_edit": "^3.0",
+        "drupal/paragraphs": "^1.15",
+        "drupal/viewsreference": "^1.8",
+        "drupal/webform": "^6.1"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
         "squizlabs/php_codesniffer": "3.*",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "installer-name": "s360_base_paragraphs",
+        "installer-paths": {
+            "web/modules/contrib/{$name}": [
+                "type:drupal-module"
+            ]
+        }
+    },
+    "scripts": {
+        "code-sniff": [
+            "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=vendor .",
+            "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=vendor ."
+        ]
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false
-        }
+        },
+        "sort-packages": true
     }
 }
