@@ -10,7 +10,6 @@ dependencies:
   - drupal:media_library
   - drupal:media_library_edit
   - drupal:paragraphs
-  - drupal:paragraphs_library
   - drupal:views
   - drupal:viewsreference
   - drupal:webform
