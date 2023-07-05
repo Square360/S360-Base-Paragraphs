@@ -3,15 +3,17 @@ description: 'Adds a base set of paragraphs.'
 type: module
 package: 'Paragraphs'
 dependencies:
+  # Core
   - drupal:media
   - drupal:media_library
   - drupal:views
+  # Contrib
   - allowed_formats:allowed_formats
   - double_field:double_field
   - field_group:field_group
   - media_library_edit:media_library_edit
   - paragraphs:paragraphs
-  - paragraphs:paragraph_library
+  - paragraphs:paragraphs_library
   - entity_usage:entity_usage
   - s360_advanced_header_field:s360_advanced_header_field
   - viewsreference:viewsreference
