@@ -6,7 +6,7 @@ dependencies:
     - field.field.paragraph.html_content.field_header
     - paragraphs.paragraphs_type.html_content
   module:
-    - s360_advanced_header_field
+    - advanced_header_field
     - text
 id: paragraph.html_content.default
 targetEntityType: paragraph

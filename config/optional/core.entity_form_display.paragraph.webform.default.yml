@@ -7,7 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.webform
   module:
     - field_group
-    - s360_advanced_header_field
+    - advanced_header_field
     - webform
 third_party_settings:
   field_group:
