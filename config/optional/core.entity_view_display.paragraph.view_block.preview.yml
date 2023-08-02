@@ -7,7 +7,7 @@ dependencies:
     - field.field.paragraph.view_block.field_view
     - paragraphs.paragraphs_type.view_block
   module:
-    - s360_advanced_header_field
+    - advanced_header_field
 id: paragraph.view_block.preview
 targetEntityType: paragraph
 bundle: view_block

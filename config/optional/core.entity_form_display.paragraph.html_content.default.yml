@@ -8,7 +8,7 @@ dependencies:
   module:
     - allowed_formats
     - field_group
-    - s360_advanced_header_field
+    - advanced_header_field
     - text
 third_party_settings:
   field_group:

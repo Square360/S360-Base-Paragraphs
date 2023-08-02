@@ -15,7 +15,7 @@ dependencies:
   - paragraphs:paragraphs
   - paragraphs:paragraphs_library
   - entity_usage:entity_usage
-  - s360_advanced_header_field:s360_advanced_header_field
+  - advanced_header_field:advanced_header_field
   - viewsreference:viewsreference
   - webform:webform
   - webform:webform_ui

@@ -3,14 +3,14 @@ status: true
 dependencies:
   module:
     - paragraphs
-    - s360_advanced_header_field
+    - advanced_header_field
 id: paragraph.field_header
 field_name: field_header
 entity_type: paragraph
 type: advanced_header_field
 settings:
   custom_styles: ''
-module: s360_advanced_header_field
+module: advanced_header_field
 locked: false
 cardinality: 1
 translatable: true
