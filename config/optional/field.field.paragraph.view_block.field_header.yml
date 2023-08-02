@@ -5,7 +5,7 @@ dependencies:
     - field.storage.paragraph.field_header
     - paragraphs.paragraphs_type.view_block
   module:
-    - s360_advanced_header_field
+    - advanced_header_field
 id: paragraph.view_block.field_header
 field_name: field_header
 entity_type: paragraph

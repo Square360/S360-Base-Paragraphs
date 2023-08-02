@@ -7,7 +7,7 @@ dependencies:
     - paragraphs.paragraphs_type.view_block
   module:
     - field_group
-    - s360_advanced_header_field
+    - advanced_header_field
     - viewsreference
 third_party_settings:
   field_group:

@@ -6,7 +6,7 @@ dependencies:
     - field.field.paragraph.webform.field_webform
     - paragraphs.paragraphs_type.webform
   module:
-    - s360_advanced_header_field
+    - advanced_header_field
     - webform
 id: paragraph.webform.default
 targetEntityType: paragraph
