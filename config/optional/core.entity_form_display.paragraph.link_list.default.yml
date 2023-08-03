@@ -2,21 +2,24 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.link_list.field_header
     - field.field.paragraph.link_list.field_links
     - paragraphs.paragraphs_type.link_list
   module:
     - field_group
     - link
+    - advanced_header_field
 third_party_settings:
   field_group:
     group_tabs_content_group:
       children:
+        - group_header
         - group_content
         - group_options
       label: 'Tabs - Content Group'
       region: content
       parent_name: ''
-      weight: 0
+      weight: 1
       format_type: tabs
       format_settings:
         classes: ''
@@ -30,7 +33,7 @@ third_party_settings:
       label: Content
       region: content
       parent_name: group_tabs_content_group
-      weight: 20
+      weight: 21
       format_type: tab
       format_settings:
         classes: ''
@@ -45,7 +48,22 @@ third_party_settings:
       label: Options
       region: content
       parent_name: group_tabs_content_group
-      weight: 21
+      weight: 22
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_header:
+      children:
+        - field_header
+      label: Header
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 20
       format_type: tab
       format_settings:
         classes: ''
@@ -59,6 +77,14 @@ targetEntityType: paragraph
 bundle: link_list
 mode: default
 content:
+  field_header:
+    type: advanced_header_field
+    weight: 0
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   field_links:
     type: link_default
     weight: 1
