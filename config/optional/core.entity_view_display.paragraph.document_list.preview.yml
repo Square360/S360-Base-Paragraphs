@@ -5,9 +5,11 @@ dependencies:
     - core.entity_view_mode.paragraph.preview
     - field.field.paragraph.document_list.field_document_display_mode
     - field.field.paragraph.document_list.field_erm_documents
+    - field.field.paragraph.document_list.field_header
     - paragraphs.paragraphs_type.document_list
   module:
     - options
+    - advanced_header_field
 id: paragraph.document_list.preview
 targetEntityType: paragraph
 bundle: document_list
@@ -18,13 +20,20 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_erm_documents:
     type: entity_reference_label
     label: inline
     settings:
       link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_header:
+    type: advanced_header_field_string
+    label: inline
+    settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content

@@ -22,7 +22,6 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
         'curated_content' => t('Curated Content'),
         'document_list' => t('Document List'),
         'embed_code' => t('Embed Code'),
-        'header' => t('Header'),
         'html_content' => t('HTML Content'),
         'image' => t('Image'),
         'link_list' => t('Link List'),
