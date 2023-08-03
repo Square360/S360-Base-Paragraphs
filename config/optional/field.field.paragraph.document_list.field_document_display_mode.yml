@@ -12,11 +12,9 @@ entity_type: paragraph
 bundle: document_list
 label: 'Document Display Mode'
 description: ''
-required: true
+required: false
 translatable: false
-default_value:
-  -
-    value: inline
+default_value: {  }
 default_value_callback: ''
 settings: {  }
 field_type: list_string
