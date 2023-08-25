@@ -21,7 +21,7 @@
         "drupal/field_group": "^3.4",
         "drupal/media_library_edit": "^3.0",
         "drupal/paragraphs": "^1.15",
-        "drupal/viewsreference": "^1.8",
+        "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.1"
     },
     "require-dev": {
