@@ -6,72 +6,8 @@ dependencies:
     - field.field.paragraph.link_list.field_links
     - paragraphs.paragraphs_type.link_list
   module:
-    - field_group
-    - link
     - advanced_header_field
-third_party_settings:
-  field_group:
-    group_tabs_content_group:
-      children:
-        - group_header
-        - group_content
-        - group_options
-      label: 'Tabs - Content Group'
-      region: content
-      parent_name: ''
-      weight: 1
-      format_type: tabs
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        direction: horizontal
-        width_breakpoint: null
-    group_content:
-      children:
-        - field_links
-      label: Content
-      region: content
-      parent_name: group_tabs_content_group
-      weight: 21
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-    group_options:
-      children:
-        - status
-      label: Options
-      region: content
-      parent_name: group_tabs_content_group
-      weight: 22
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-    group_header:
-      children:
-        - field_header
-      label: Header
-      region: content
-      parent_name: group_tabs_content_group
-      weight: 20
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
+    - link
 id: paragraph.link_list.default
 targetEntityType: paragraph
 bundle: link_list
@@ -95,7 +31,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 0
+    weight: 3
     region: content
     settings:
       display_label: true

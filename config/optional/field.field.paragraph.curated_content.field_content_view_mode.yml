@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_view_mode
+    - field.storage.paragraph.field_content_view_mode
     - paragraphs.paragraphs_type.curated_content
   module:
     - options
-id: paragraph.curated_content.field_view_mode
-field_name: field_view_mode
+id: paragraph.curated_content.field_content_view_mode
+field_name: field_content_view_mode
 entity_type: paragraph
 bundle: curated_content
-label: 'View Mode'
+label: 'Content View Mode'
 description: ''
 required: true
 translatable: false

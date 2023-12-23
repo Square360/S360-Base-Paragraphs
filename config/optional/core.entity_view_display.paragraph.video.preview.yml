@@ -4,9 +4,11 @@ dependencies:
   config:
     - core.entity_view_mode.paragraph.preview
     - field.field.paragraph.video.field_erm_video
+    - field.field.paragraph.video.field_header
     - image.style.media_library
     - paragraphs.paragraphs_type.video
   module:
+    - advanced_header_field
     - media
 id: paragraph.video.preview
 targetEntityType: paragraph
@@ -19,6 +21,15 @@ content:
     settings:
       image_link: ''
       image_style: media_library
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_header:
+    type: advanced_header_field_string
+    label: inline
+    settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content

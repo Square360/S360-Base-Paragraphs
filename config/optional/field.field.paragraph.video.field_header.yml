@@ -3,17 +3,17 @@ status: true
 dependencies:
   config:
     - field.storage.paragraph.field_header
-    - paragraphs.paragraphs_type.link_list
+    - paragraphs.paragraphs_type.video
   module:
     - advanced_header_field
-id: paragraph.link_list.field_header
+id: paragraph.video.field_header
 field_name: field_header
 entity_type: paragraph
-bundle: link_list
+bundle: video
 label: Header
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:

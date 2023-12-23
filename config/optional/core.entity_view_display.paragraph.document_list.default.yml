@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.document_list.field_document_display_mode
+    - field.field.paragraph.document_list.field_document_view_mode
     - field.field.paragraph.document_list.field_erm_documents
     - field.field.paragraph.document_list.field_header
     - paragraphs.paragraphs_type.document_list
@@ -34,4 +34,4 @@ content:
     weight: 0
     region: content
 hidden:
-  field_document_display_mode: true
+  field_document_view_mode: true

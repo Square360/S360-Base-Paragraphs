@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.document_list.field_document_display_mode
+    - field.field.paragraph.document_list.field_document_view_mode
     - field.field.paragraph.document_list.field_erm_documents
     - field.field.paragraph.document_list.field_header
     - paragraphs.paragraphs_type.document_list
   module:
+    - advanced_header_field
     - field_group
     - media_library
     - media_library_edit
-    - advanced_header_field
 third_party_settings:
   field_group:
     group_tabs_content_group:
@@ -21,7 +21,7 @@ third_party_settings:
       label: 'Tabs - Content Group'
       region: content
       parent_name: ''
-      weight: 1
+      weight: 0
       format_type: tabs
       format_settings:
         classes: ''
@@ -31,27 +31,12 @@ third_party_settings:
         width_breakpoint: null
     group_media:
       children:
+        - field_document_view_mode
         - field_erm_documents
       label: Media
       region: content
       parent_name: group_tabs_content_group
       weight: 21
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-    group_options:
-      children:
-        - field_document_display_mode
-        - status
-      label: Options
-      region: content
-      parent_name: group_tabs_content_group
-      weight: 22
       format_type: tab
       format_settings:
         classes: ''
@@ -80,7 +65,7 @@ targetEntityType: paragraph
 bundle: document_list
 mode: default
 content:
-  field_document_display_mode:
+  field_document_view_mode:
     type: options_select
     weight: 2
     region: content
@@ -88,7 +73,7 @@ content:
     third_party_settings: {  }
   field_erm_documents:
     type: media_library_widget
-    weight: 1
+    weight: 3
     region: content
     settings:
       media_types: {  }
@@ -105,7 +90,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 3
+    weight: 1
     region: content
     settings:
       display_label: true
