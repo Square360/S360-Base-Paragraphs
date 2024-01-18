@@ -7,7 +7,56 @@ dependencies:
     - paragraphs.paragraphs_type.view_block
   module:
     - advanced_header_field
+    - field_group
     - viewsreference
+third_party_settings:
+  field_group:
+    group_tabs_content_group:
+      children:
+        - group_header
+        - group_content
+      label: 'Tabs - Content Group'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_header:
+      children:
+        - field_header
+      label: Header
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_content:
+      children:
+        - field_view
+      label: Content
+      region: content
+      parent_name: group_tabs_content_group
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
 id: paragraph.view_block.default
 targetEntityType: paragraph
 bundle: view_block
