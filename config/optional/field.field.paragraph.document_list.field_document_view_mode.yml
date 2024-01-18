@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_document_display_mode
+    - field.storage.paragraph.field_document_view_mode
     - paragraphs.paragraphs_type.document_list
   module:
     - options
-id: paragraph.document_list.field_document_display_mode
-field_name: field_document_display_mode
+id: paragraph.document_list.field_document_view_mode
+field_name: field_document_view_mode
 entity_type: paragraph
 bundle: document_list
-label: 'Document Display Mode'
+label: 'Document View Mode'
 description: ''
 required: false
 translatable: false

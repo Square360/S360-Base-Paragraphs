@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.paragraph.field_view
     - paragraphs.paragraphs_type.view_block
-    - views.view.archive
   module:
     - viewsreference
 id: paragraph.view_block.field_view
@@ -15,41 +14,16 @@ label: View
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    options:
-      title: 0
-      argument: ''
-    display_id: block_1
-    argument: null
-    title: 0
-    data: null
-    target_uuid: ee5ba47d-cd3b-45dd-b40c-292bef35bb09
+default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:view'
   handler_settings:
     target_bundles: null
-    auto_create: 0
+    auto_create: false
   plugin_types:
     block: block
-    default: 0
-    page: 0
-    feed: 0
-    embed: 0
-  preselect_views:
-    block_content: 0
-    content: 0
-    content_recent: 0
-    files: 0
-    frontpage: 0
-    media: 0
-    media_library: 0
-    taxonomy_term: 0
-    test: 0
-    user_admin_people: 0
-    watchdog: 0
-    webform_submissions: 0
-    who_s_new: 0
-    who_s_online: 0
+  preselect_views: {  }
+  enabled_settings:
+    argument: argument
 field_type: viewsreference

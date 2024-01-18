@@ -14,30 +14,15 @@ label: Header
 description: ''
 required: false
 translatable: true
-default_value:
-  -
-    attributes: {  }
-    text:
-      heading_tag: h2
-      title: ''
-      subtitle: ''
-    subtitle: ''
-    uri: 'route:<nolink>'
-    title: ''
-    options:
-      heading_tag: h2
-      visually_hidden: 0
-      size: ''
-      styles: {  }
-      new_window: 0
+default_value: {  }
 default_value_callback: ''
 settings:
   link_type: '17'
   title: '2'
   allowed_tags:
-    h3: h3
-    h4: h4
-    h5: h5
-    h6: h6
-    h2: 0
+    - h2
+    - h3
+    - h4
+    - h5
+    - h6
 field_type: advanced_header_field

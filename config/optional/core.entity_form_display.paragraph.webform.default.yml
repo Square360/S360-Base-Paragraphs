@@ -6,8 +6,8 @@ dependencies:
     - field.field.paragraph.webform.field_webform
     - paragraphs.paragraphs_type.webform
   module:
-    - field_group
     - advanced_header_field
+    - field_group
     - webform
 third_party_settings:
   field_group:
@@ -15,18 +15,18 @@ third_party_settings:
       children:
         - group_header
         - group_content
-        - group_options
       label: 'Tabs - Content Group'
       region: content
       parent_name: ''
       weight: 0
-      format_type: tabs
+      format_type: tab
       format_settings:
         classes: ''
         show_empty_fields: false
         id: ''
-        direction: horizontal
-        width_breakpoint: null
+        formatter: closed
+        description: ''
+        required_fields: true
     group_header:
       children:
         - field_header
@@ -49,21 +49,6 @@ third_party_settings:
       region: content
       parent_name: group_tabs_content_group
       weight: 21
-      format_type: tab
-      format_settings:
-        classes: ''
-        show_empty_fields: false
-        id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
-    group_options:
-      children:
-        - status
-      label: Options
-      region: content
-      parent_name: group_tabs_content_group
-      weight: 22
       format_type: tab
       format_settings:
         classes: ''

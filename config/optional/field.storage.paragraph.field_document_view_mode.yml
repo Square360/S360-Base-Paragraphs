@@ -4,8 +4,8 @@ dependencies:
   module:
     - options
     - paragraphs
-id: paragraph.field_view_mode
-field_name: field_view_mode
+id: paragraph.field_document_view_mode
+field_name: field_document_view_mode
 entity_type: paragraph
 type: list_string
 settings:

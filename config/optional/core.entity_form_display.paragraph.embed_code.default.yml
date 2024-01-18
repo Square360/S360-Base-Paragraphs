@@ -13,7 +13,7 @@ mode: default
 content:
   field_embedded_media:
     type: double_field
-    weight: 2
+    weight: 0
     region: content
     settings:
       first:
@@ -34,6 +34,12 @@ content:
         rows: 5
       inline: false
     third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
 hidden:
   created: true
-  status: true

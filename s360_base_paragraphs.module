@@ -5,8 +5,6 @@
  * s360_base_paragraphs.module
  */
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Render\Markup;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\views\Views;
 use Drupal\webform\Entity\Webform;
@@ -60,25 +58,6 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
 
       return $output;
   }
-}
-
-/**
- * Implements hook_preprocess_paragraph().
- */
-function s360_base_paragraphs_preprocess_paragraph(&$variables) {
-  $elements = $variables['elements'];
-
-  /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-  $paragraph_bundle = $paragraph->bundle();
-  $paragraph_bundle_safe = Html::getClass($paragraph_bundle);
-  $paragraph_view_mode = $elements['#view_mode'];
-
-  $variables['attributes']['class'][] = 'paragraph';
-  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_bundle");
-  $variables['attributes']['class'][] = Html::getClass("paragraph--$paragraph_view_mode");
-
-  $variables['attributes']['data-js'] = $paragraph_bundle_safe;
 }
 
 /**
@@ -231,101 +210,12 @@ function s360_base_paragraphs_preprocess_paragraph__curated_content(&$variables)
     // Make sure it's a valid node and we have the proper access to view it.
     if ($node && $node->access('view')) {
       $render_controller = $entity_type_manager->getViewBuilder('node');
-      $variables['curated_node'] = $render_controller->view($node, $view_mode);
+      $variables['paragraph_curated_node'] = $render_controller->view($node, $view_mode);
     }
   }
   else {
-    $variables['curated_node'] = '';
+    $variables['paragraph_curated_node'] = '';
   }
-}
-
-/**
- * Implements hook_preprocess_paragraph() for cta_link.
- */
-function s360_base_paragraphs_preprocess_paragraph__cta_link(&$variables) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-
-  if ($paragraph->hasField('field_cta_link_style')) {
-    $field_cta_link_style = $paragraph->get('field_cta_link_style');
-
-    if ($field_cta_link_style->count()) {
-      $variables['attributes']['class'][] = 'paragraph--cta-link-' . $field_cta_link_style->getString();
-    }
-  }
-}
-
-/**
- * Implements hook_preprocess_paragraph() for embed_code.
- */
-function s360_base_paragraphs_preprocess_paragraph__embed_code(&$variables) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-
-  if ($paragraph->hasField('field_embedded_media')) {
-    $field_embedded_media = $paragraph->get('field_embedded_media');
-
-    $embedded_media = $field_embedded_media->first()->getValue();
-
-    $variables['attributes']['class'][] = 'paragraph--embed-type-' . Html::getClass($embedded_media['first']);
-    $variables['embed_code'] = Markup::create($embedded_media['second']);
-  }
-}
-
-/**
- * Implements hook_preprocess_paragraph__document_list().
- */
-function s360_base_paragraphs_preprocess_paragraph__document_list(&$variables) {
-  $entity_type_manager = \Drupal::entityTypeManager();
-
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-
-  if ($paragraph->hasField('field_erm_documents')) {
-    $field_erm_documents = $paragraph->get('field_erm_documents');
-
-    if ($field_erm_documents->count()) {
-      $media_ids = explode(',', $field_erm_documents->getString());
-    }
-  }
-
-  if ($paragraph->hasField('field_document_display_mode')) {
-    $field_document_display_mode = $paragraph->get('field_document_display_mode');
-
-    if ($field_document_display_mode->count()) {
-      $document_display_mode = $field_document_display_mode->first()->getString();
-
-      if ($document_display_mode === 'default') {
-        $variables['attributes']['class'][] = 'paragraph--list-as-grid';
-      }
-    }
-  }
-
-  if ($field_erm_documents && $field_document_display_mode) {
-    $variables['documents'] = [];
-
-    foreach ($media_ids as $media_id) {
-      /** @var \Drupal\media\Entity\Media $media */
-      $media = $entity_type_manager->getStorage('media')->load(trim($media_id));
-
-      // Make sure it's a media and we have the proper access to view it.
-      if ($media && $media->access('view')) {
-        $render_controller = $entity_type_manager->getViewBuilder('media');
-        $variables['documents'][] = $render_controller->view($media, $document_display_mode);
-      }
-    }
-  }
-}
-
-/**
- * Implements hook_modules_installed().
- */
-function s360_base_paragraphs_modules_installed() {
-  $config = \Drupal::service('config.factory')->getEditable('paragraphs.paragraphs_type.from_library');
-
-  $config->set('icon_uuid', '77cb48d9-4997-4c8b-beb7-8879ceb53698')->save();
-  $config->set('icon_default', 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxnIGlkPSJTcXVhcmVfRnJhbWUiPjxnPjxyZWN0IHg9IjEwIiB5PSIxMCIgd2lkdGg9IjQ5MiIgaGVpZ2h0PSI0OTIiIHJ4PSI3MCIgcnk9IjcwIiBzdHlsZT0iZmlsbDojZmZmOyIvPjxwYXRoIGQ9Ik00MzIsMjBjMTUuOTQsMCwzMC45OCw2LjI3LDQyLjM2LDE3LjY0LDExLjM4LDExLjM4LDE3LjY0LDI2LjQyLDE3LjY0LDQyLjM2VjQzMmMwLDE1Ljk0LTYuMjcsMzAuOTgtMTcuNjQsNDIuMzYtMTEuMzgsMTEuMzgtMjYuNDIsMTcuNjQtNDIuMzYsMTcuNjRIODBjLTE1Ljk0LDAtMzAuOTgtNi4yNy00Mi4zNi0xNy42NC0xMS4zOC0xMS4zOC0xNy42NC0yNi40Mi0xNy42NC00Mi4zNlY4MGMwLTE1Ljk0LDYuMjctMzAuOTgsMTcuNjQtNDIuMzYsMTEuMzgtMTEuMzgsMjYuNDItMTcuNjQsNDIuMzYtMTcuNjRINDMyTTQzMiwwSDgwQzM2LDAsMCwzNiwwLDgwVjQzMmMwLDQ0LDM2LDgwLDgwLDgwSDQzMmM0NCwwLDgwLTM2LDgwLTgwVjgwQzUxMiwzNiw0NzYsMCw0MzIsMGgwWiIvPjwvZz48L2c+PGcgaWQ9ImxpYnJhcnkiPjxwYXRoIGQ9Ik00MTAuNjMsMTMzLjRoLTExMS4yYy0yNS4zNSwwLTM3LjU5LDEzLjM2LTQzLjQzLDI0Ljc2LTUuODUtMTEuNDEtMTguMDgtMjQuNzYtNDMuNDMtMjQuNzZIMTAxLjM2Yy0zLjUxLDAtNi4zNiwyLjg0LTYuMzYsNi4zNnYyMzIuNDljMCwzLjUxLDIuODQsNi4zNiw2LjM2LDYuMzZINDEwLjYzYzMuNTEsMCw2LjM3LTIuODQsNi4zNy02LjM2VjEzOS43NmMwLTMuNTItMi44NS02LjM2LTYuMzctNi4zNlptLTE5NC44NywyMDQuNDNIMTA3LjcxVjE0Ni4xaDMxLjc2djEwNi43MWwyNC4zNy0zMS41MiwyNC4zNiwzMS41MnYtMTA2LjcxaDI0LjM3YzM1Ljc5LDAsMzcuMDQsMzMuMywzNy4wNywzNy4wN3YxNjQuNDljLTYuNjktNS41OS0xNi43NS05LjgzLTMzLjg4LTkuODNabTE4OC41MywwaC0xMDguMDVjLTE3LjEzLDAtMjcuMTksNC4yNS0zMy44OSw5Ljg0VjE4My4yYy4wMy0zLjc5LDEuMjctMzcuMDksMzcuMDctMzcuMDloMTA0Ljg2djE5MS43MWgwWiIvPjwvZz48L3N2Zz4=')->save();
-  $config->set('description', 'Place reusable paragraphs on a page.')->save();
 }
 
 /**

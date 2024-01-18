@@ -3,21 +3,23 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.curated_content.field_content_view_mode
     - field.field.paragraph.curated_content.field_ern_content
-    - field.field.paragraph.curated_content.field_view_mode
     - paragraphs.paragraphs_type.curated_content
   module:
-    - layout_builder
     - options
-third_party_settings:
-  layout_builder:
-    enabled: false
-    allow_custom: false
 id: paragraph.curated_content.preview
 targetEntityType: paragraph
 bundle: curated_content
 mode: preview
 content:
+  field_content_view_mode:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
   field_ern_content:
     type: entity_reference_label
     label: inline
@@ -25,12 +27,5 @@ content:
       link: false
     third_party_settings: {  }
     weight: 0
-    region: content
-  field_view_mode:
-    type: list_default
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
     region: content
 hidden: {  }

@@ -7,8 +7,8 @@ dependencies:
     - field.field.paragraph.link_list.field_links
     - paragraphs.paragraphs_type.link_list
   module:
-    - link
     - advanced_header_field
+    - link
 id: paragraph.link_list.preview
 targetEntityType: paragraph
 bundle: link_list
