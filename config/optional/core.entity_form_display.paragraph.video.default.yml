@@ -3,8 +3,10 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.video.field_erm_video
+    - field.field.paragraph.video.field_header
     - paragraphs.paragraphs_type.video
   module:
+    - advanced_header_field
     - field_group
     - media_library
     - media_library_edit
@@ -12,8 +14,8 @@ third_party_settings:
   field_group:
     group_tabs_content_group:
       children:
-        - group_media
-        - group_options
+        - group_header
+        - group_content
       label: 'Tabs - Content Group'
       region: content
       parent_name: ''
@@ -25,13 +27,13 @@ third_party_settings:
         id: ''
         direction: horizontal
         width_breakpoint: null
-    group_options:
+    group_header:
       children:
-        - status
-      label: Options
+        - field_header
+      label: Header
       region: content
       parent_name: group_tabs_content_group
-      weight: 21
+      weight: 20
       format_type: tab
       format_settings:
         classes: ''
@@ -40,13 +42,13 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
-    group_media:
+    group_content:
       children:
         - field_erm_video
-      label: Media
+      label: Content
       region: content
       parent_name: group_tabs_content_group
-      weight: 20
+      weight: 21
       format_type: tab
       format_settings:
         classes: ''
@@ -69,9 +71,17 @@ content:
     third_party_settings:
       media_library_edit:
         show_edit: '1'
+  field_header:
+    type: advanced_header_field
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 1
+    weight: 3
     region: content
     settings:
       display_label: true

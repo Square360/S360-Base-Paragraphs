@@ -8,14 +8,12 @@ dependencies:
   - drupal:media_library
   - drupal:views
   # Contrib
-  - allowed_formats:allowed_formats
+  - advanced_header_field:advanced_header_field
   - double_field:double_field
+  - entity_usage:entity_usage
   - field_group:field_group
   - media_library_edit:media_library_edit
   - paragraphs:paragraphs
-  - paragraphs:paragraphs_library
-  - entity_usage:entity_usage
-  - advanced_header_field:advanced_header_field
   - viewsreference:viewsreference
   - webform:webform
   - webform:webform_ui
