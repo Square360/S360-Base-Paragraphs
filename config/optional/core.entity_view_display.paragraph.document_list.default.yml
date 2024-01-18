@@ -8,11 +8,19 @@ dependencies:
     - paragraphs.paragraphs_type.document_list
   module:
     - advanced_header_field
+    - options
 id: paragraph.document_list.default
 targetEntityType: paragraph
 bundle: document_list
 mode: default
 content:
+  field_document_view_mode:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
   field_erm_documents:
     type: entity_reference_entity_id
     label: hidden
@@ -33,5 +41,4 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden:
-  field_document_view_mode: true
+hidden: {  }
