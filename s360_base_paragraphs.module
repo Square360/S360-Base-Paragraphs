@@ -179,46 +179,6 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_paragraph() for curated_content.
- */
-function s360_base_paragraphs_preprocess_paragraph__curated_content(&$variables) {
-  $entity_type_manager = \Drupal::entityTypeManager();
-
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
-
-  if ($paragraph->hasField('field_ern_content')) {
-    $field_ern_content = $paragraph->get('field_ern_content');
-
-    if ($field_ern_content->count()) {
-      $node_id = $field_ern_content->first()->getString();
-    }
-  }
-
-  if ($paragraph->hasField('field_view_mode')) {
-    $field_view_mode = $paragraph->get('field_view_mode');
-
-    if ($field_view_mode->count()) {
-      $view_mode = $field_view_mode->first()->getString();
-    }
-  }
-
-  if ($field_ern_content && $field_view_mode) {
-    /** @var \Drupal\node\Entity\Node $node */
-    $node = $entity_type_manager->getStorage('node')->load($node_id);
-
-    // Make sure it's a valid node and we have the proper access to view it.
-    if ($node && $node->access('view')) {
-      $render_controller = $entity_type_manager->getViewBuilder('node');
-      $variables['paragraph_curated_node'] = $render_controller->view($node, $view_mode);
-    }
-  }
-  else {
-    $variables['paragraph_curated_node'] = '';
-  }
-}
-
-/**
  * Checks the route name to see if it's an "admin route".
  *
  * @return bool
