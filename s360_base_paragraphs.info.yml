@@ -18,3 +18,4 @@ dependencies:
   - webform:webform
   - webform:webform_ui
 core_version_requirement: ^9 || ^10
+version: '6.0.1'
