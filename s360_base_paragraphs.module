@@ -188,6 +188,7 @@ function _s360_base_paragraphs_is_admin_route() {
   return in_array(Drupal::routeMatch()->getRouteName(), [
     'node.add',
     'entity.node.edit_form',
+    'entity.group.edit_form',
     'layout_paragraphs.builder.edit_item',
     'layout_paragraphs.builder.insert',
   ]);
