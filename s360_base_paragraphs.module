@@ -22,6 +22,7 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
         'embed_code' => t('Embed Code'),
         'html_content' => t('HTML Content'),
         'image' => t('Image'),
+        'in_this_section' => t('In this Section'),
         'link_list' => t('Link List'),
         'placeholder' => t('Placeholder'),
         'video' => t('Video'),
