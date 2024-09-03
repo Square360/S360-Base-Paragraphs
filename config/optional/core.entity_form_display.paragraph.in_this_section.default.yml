@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.in_this_section.field_target_menu
+    - paragraphs.paragraphs_type.in_this_section
+id: paragraph.in_this_section.default
+targetEntityType: paragraph
+bundle: in_this_section
+mode: default
+content:
+  field_target_menu:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true

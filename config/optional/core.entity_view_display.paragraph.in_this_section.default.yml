@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.in_this_section.field_target_menu
+    - paragraphs.paragraphs_type.in_this_section
+id: paragraph.in_this_section.default
+targetEntityType: paragraph
+bundle: in_this_section
+mode: default
+content: {  }
+hidden:
+  field_target_menu: true

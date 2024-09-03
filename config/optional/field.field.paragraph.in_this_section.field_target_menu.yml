@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_target_menu
+    - paragraphs.paragraphs_type.in_this_section
+  module:
+    - options
+id: paragraph.in_this_section.field_target_menu
+field_name: field_target_menu
+entity_type: paragraph
+bundle: in_this_section
+label: 'Target Menu'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
