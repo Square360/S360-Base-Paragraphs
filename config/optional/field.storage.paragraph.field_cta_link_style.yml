@@ -9,7 +9,10 @@ field_name: field_cta_link_style
 entity_type: paragraph
 type: list_string
 settings:
-  allowed_values: {  }
+  allowed_values:
+    -
+      value: primary
+      label: Primary
   allowed_values_function: ''
 module: options
 locked: false
