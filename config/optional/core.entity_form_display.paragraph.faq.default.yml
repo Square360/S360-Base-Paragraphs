@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.placeholder.field_body
-    - field.field.paragraph.placeholder.field_title
-    - paragraphs.paragraphs_type.placeholder
+    - field.field.paragraph.faq.field_body
+    - field.field.paragraph.faq.field_title
+    - paragraphs.paragraphs_type.faq
   module:
     - allowed_formats
     - text
-id: paragraph.placeholder.default
+id: paragraph.faq.default
 targetEntityType: paragraph
-bundle: placeholder
+bundle: faq
 mode: default
 content:
   field_body:
@@ -18,7 +18,7 @@ content:
     weight: 1
     region: content
     settings:
-      rows: 2
+      rows: 5
       placeholder: ''
     third_party_settings:
       allowed_formats:
@@ -34,7 +34,7 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_label: true

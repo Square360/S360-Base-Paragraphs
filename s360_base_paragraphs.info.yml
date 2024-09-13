@@ -7,8 +7,10 @@ dependencies:
   - drupal:media
   - drupal:media_library
   - drupal:views
+
   # Contrib
   - advanced_header_field:advanced_header_field
+  - allowed_formats:allowed_formats
   - double_field:double_field
   - entity_usage:entity_usage
   - field_group:field_group
@@ -18,4 +20,4 @@ dependencies:
   - webform:webform
   - webform:webform_ui
 core_version_requirement: ^9 || ^10
-version: '6.0.1'
+version: '6.1.0'

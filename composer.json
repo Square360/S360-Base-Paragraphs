@@ -15,6 +15,7 @@
     ],
     "require": {
         "drupal/advanced_header_field": "^1.0",
+        "drupal/allowed_formats": "^3.0",
         "drupal/double_field": "^4.1",
         "drupal/entity_usage": "^2.0@beta",
         "drupal/field_group": "^3.4",
