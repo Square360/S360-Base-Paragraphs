@@ -10,29 +10,6 @@ id: paragraph.embed_code.default
 targetEntityType: paragraph
 bundle: embed_code
 mode: default
-content:
-  field_embedded_media:
-    type: double_field_unformatted_list
-    label: hidden
-    settings:
-      first:
-        format_type: medium
-        link: false
-        hidden: false
-        key: false
-        decimal_separator: .
-        thousand_separator: ''
-        scale: 2
-      second:
-        format_type: medium
-        link: false
-        hidden: false
-        key: false
-        decimal_separator: .
-        thousand_separator: ''
-        scale: 2
-      inline: true
-    third_party_settings: {  }
-    weight: 2
-    region: content
-hidden: {  }
+content: {  }
+hidden:
+  field_embedded_media: true

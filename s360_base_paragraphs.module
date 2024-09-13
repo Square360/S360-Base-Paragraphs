@@ -22,6 +22,7 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
         'embed_code' => t('Embed Code'),
         'html_content' => t('HTML Content'),
         'image' => t('Image'),
+        'in_this_section' => t('In this Section'),
         'link_list' => t('Link List'),
         'placeholder' => t('Placeholder'),
         'video' => t('Video'),
@@ -182,7 +183,7 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
  * Checks the route name to see if it's an "admin route".
  *
  * @return bool
- *   Returns true if needle is found in the array, false otherwise.
+ *   Returns true if the current route is found in the array, false otherwise.
  */
 function _s360_base_paragraphs_is_admin_route() {
   return in_array(Drupal::routeMatch()->getRouteName(), [

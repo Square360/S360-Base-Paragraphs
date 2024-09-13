@@ -14,7 +14,7 @@ mode: preview
 content:
   field_embedded_media:
     type: double_field_unformatted_list
-    label: above
+    label: inline
     settings:
       first:
         format_type: medium

@@ -4,15 +4,15 @@ dependencies:
   module:
     - options
     - paragraphs
-id: paragraph.field_cta_link_style
-field_name: field_cta_link_style
+id: paragraph.field_target_menu
+field_name: field_target_menu
 entity_type: paragraph
 type: list_string
 settings:
   allowed_values:
     -
-      value: primary
-      label: Primary
+      value: main
+      label: Main
   allowed_values_function: ''
 module: options
 locked: false

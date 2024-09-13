@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.in_this_section.field_target_menu
+    - paragraphs.paragraphs_type.in_this_section
+  module:
+    - options
+id: paragraph.in_this_section.preview
+targetEntityType: paragraph
+bundle: in_this_section
+mode: preview
+content:
+  field_target_menu:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }
