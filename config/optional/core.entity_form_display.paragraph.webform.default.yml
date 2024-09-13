@@ -19,14 +19,13 @@ third_party_settings:
       region: content
       parent_name: ''
       weight: 0
-      format_type: tab
+      format_type: tabs
       format_settings:
         classes: ''
         show_empty_fields: false
         id: ''
-        formatter: closed
-        description: ''
-        required_fields: true
+        direction: horizontal
+        width_breakpoint: null
     group_header:
       children:
         - field_header
