@@ -14,7 +14,30 @@ label: Header
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    attributes: {  }
+    text:
+      heading_tag: h2
+      title: ''
+      subtitle: ''
+    display_options:
+      visually_hidden: 0
+      size: ''
+      styles:
+        centered: 0
+    link_options:
+      uri: 'route:<nolink>'
+      new_window: 0
+    uri: 'route:<nolink>'
+    title: ''
+    subtitle: ''
+    options:
+      heading_tag: h2
+      visually_hidden: 0
+      size: ''
+      styles: {  }
+      new_window: 0
 default_value_callback: ''
 settings:
   link_type: '17'
@@ -23,6 +46,4 @@ settings:
     - h2
     - h3
     - h4
-    - h5
-    - h6
 field_type: advanced_header_field
