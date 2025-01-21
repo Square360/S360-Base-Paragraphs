@@ -20,6 +20,7 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
         'curated_content' => t('Curated Content'),
         'document_list' => t('Document List'),
         'embed_code' => t('Embed Code'),
+        'faq' => t('FAQ'),
         'html_content' => t('HTML Content'),
         'image' => t('Image'),
         'in_this_section' => t('In this Section'),
