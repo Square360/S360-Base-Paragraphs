@@ -191,6 +191,7 @@ function _s360_base_paragraphs_is_admin_route() {
     'node.add',
     'entity.node.edit_form',
     'entity.group.edit_form',
+    'layout_paragraphs.builder.choose_component',
     'layout_paragraphs.builder.edit_item',
     'layout_paragraphs.builder.insert',
   ]);
