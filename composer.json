@@ -14,15 +14,15 @@
         "Paragraph"
     ],
     "require": {
-        "drupal/advanced_header_field": "^1.0",
-        "drupal/allowed_formats": "^2.0",
-        "drupal/double_field": "^4.1",
-        "drupal/entity_usage": "^2.0@beta",
-        "drupal/field_group": "^3.4",
-        "drupal/media_library_edit": "^3.0",
-        "drupal/paragraphs": "^1.15",
-        "drupal/viewsreference": "^2.0@beta",
-        "drupal/webform": "^6.1"
+        "drupal/advanced_header_field": "*",
+        "drupal/allowed_formats": "*",
+        "drupal/double_field": "*",
+        "drupal/entity_usage": "*",
+        "drupal/field_group": "*",
+        "drupal/media_library_edit": "*",
+        "drupal/paragraphs": "*",
+        "drupal/viewsreference": "*",
+        "drupal/webform": "*"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
