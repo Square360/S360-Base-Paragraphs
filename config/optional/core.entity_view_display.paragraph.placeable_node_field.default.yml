@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.placeable_node_field.field_node_field
+    - paragraphs.paragraphs_type.placeable_node_field
+  module:
+    - options
+id: paragraph.placeable_node_field.default
+targetEntityType: paragraph
+bundle: placeable_node_field
+mode: default
+content:
+  field_node_field:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

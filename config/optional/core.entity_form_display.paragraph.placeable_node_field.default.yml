@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.placeable_node_field.field_node_field
+    - paragraphs.paragraphs_type.placeable_node_field
+id: paragraph.placeable_node_field.default
+targetEntityType: paragraph
+bundle: placeable_node_field
+mode: default
+content:
+  field_node_field:
+    type: options_select
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 1
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
