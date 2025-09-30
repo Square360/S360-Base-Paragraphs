@@ -3,5 +3,5 @@ description: 'Allows node fields to be placeable in layouts using paragraphs.'
 type: module
 package: 'Paragraphs'
 dependencies:
-  - s360_baes_paragraphs:s360_baes_paragraphs
+  - s360_base_paragraphs:s360_base_paragraphs
 core_version_requirement: ^10 || ^11

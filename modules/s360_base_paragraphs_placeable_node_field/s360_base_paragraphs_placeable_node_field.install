@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Install file for s360_base_paragraphs_placeable_node_field.
+ */
+
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs\Entity\ParagraphsType;
+
+/**
+ * Implements hook_uninstall().
+ */
+function s360_base_paragraphs_placeable_node_field_uninstall() {
+  $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $paragraph_bundle = 'placeable_node_field';
+
+  $paragraph_ids = $paragraph_storage->getQuery()
+    ->condition('type', $paragraph_bundle)
+    ->accessCheck(FALSE)
+    ->execute();
+
+  if (!empty($paragraph_ids)) {
+    $paragraphs = Paragraph::loadMultiple($paragraph_ids);
+
+    // Delete existing entities.
+    $paragraph_storage->delete($paragraphs);
+  }
+
+  // Load the ParagraphsType configuration entity.
+  $paragraph_type = ParagraphsType::load($paragraph_bundle);
+
+  // Check if the bundle exists before attempting to delete it.
+  if ($paragraph_type) {
+    // Delete the Paragraph bundle.
+    $paragraph_type->delete();
+
+    \Drupal::messenger()->addStatus(t('The Paragraph bundle "@bundle" has been deleted.', ['@bundle' => $paragraph_bundle]));
+  }
+}

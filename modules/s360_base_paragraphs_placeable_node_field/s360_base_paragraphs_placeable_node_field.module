@@ -5,6 +5,8 @@
  * s360_base_paragraphs_placeable_node_field.module
  */
 
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -42,18 +44,38 @@ function s360_base_paragraphs_placeable_node_field_theme() {
  * Implements hook_form_BASE_FORM_ID_alter() for 'field_config_edit_form'.
  */
 function s360_base_paragraphs_placeable_node_field_form_field_config_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
-  if ($form['#entity'] instanceof Node) {
-    \Drupal::service('s360_base_paragraphs_placeable_node_field.config_form_builder')->addToEntityForm($form, $form_state, $form_id);
+  if (!$form['#entity'] instanceof Node) {
+    return;
   }
+
+  $form_object = $form_state->getFormObject();
+  assert($form_object instanceof EntityFormInterface);
+
+  /** @var \Drupal\field\Entity\FieldConfig $field_config */
+  $field_config = $form_object->getEntity();
+  $settings = $field_config->getThirdPartySettings('s360_base_paragraphs_placeable_node_field');
+
+  $form['is_placeable'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Make this field placeable'),
+    '#default_value' => $settings['is_placeable'] ?? FALSE,
+    '#description' => t('When checked, this field will be placeable using the "Placeable Node Field" paragraph.'),
+  ];
+
+  $form['#entity_builders'][] = 's360_base_paragraphs_placeable_node_field_field_config_edit_form_builder';
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter() for 'base_field_override_edit_form'.
+ * Form builder for the field config edit form.
+ *
+ * @see s360_base_paragraphs_placeable_node_field_form_field_config_edit_form_alter
  */
-function s360_base_paragraphs_placeable_node_field_form_base_field_override_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
-  if ($form['#entity'] instanceof Node) {
-    \Drupal::service('s360_base_paragraphs_placeable_node_field.config_form_builder')->addToEntityForm($form, $form_state, $form_id);
-  }
+function s360_base_paragraphs_placeable_node_field_field_config_edit_form_builder(string $entity_type, FieldConfigInterface $field_config, array &$form, FormStateInterface $form_state) {
+  $field_config->setThirdPartySetting(
+    's360_base_paragraphs_placeable_node_field',
+    'is_placeable',
+    $form_state->getValue('is_placeable')
+  );
 }
 
 /**

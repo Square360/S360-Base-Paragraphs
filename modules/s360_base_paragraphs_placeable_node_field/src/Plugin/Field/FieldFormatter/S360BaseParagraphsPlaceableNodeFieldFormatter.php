@@ -69,11 +69,23 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
     }
 
     $field = $node->get($field_machine_name);
+
     if ($field->isEmpty()) {
       return $this->buildErrorElement($field_machine_name);
     }
 
-    return $field->view('default');
+    return [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'node__' . str_replace(['field_', '_'], ['', '-'], $field_machine_name),
+        ],
+      ],
+      'child' => [
+        $field->view('default'),
+      ],
+    ];
   }
 
   /**

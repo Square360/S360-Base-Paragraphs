@@ -36,8 +36,6 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('This module adds commonly used paragraphs types.') . '</p>';
 
-      $output .= '<p>&nbsp;</p>';
-
       $output .= '<h3>' . t('Paragraph types') . '</h3>';
       $output .= '<dl>';
 

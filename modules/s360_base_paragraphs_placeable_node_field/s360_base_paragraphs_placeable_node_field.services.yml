@@ -1,4 +1,0 @@
-services:
-  s360_base_paragraphs_placeable_node_field.config_form_builder:
-    class: Drupal\s360_base_paragraphs_placeable_node_field\ConfigFormBuilder
-    arguments: ['@current_user']
