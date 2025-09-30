@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install file for s360_base_paragraphs_placeable_node_field.
+ * Install, update and uninstall functions for s360_base_paragraphs_placeable_node_field module.
  */
 
 use Drupal\paragraphs\Entity\Paragraph;
@@ -12,11 +12,6 @@ use Drupal\paragraphs\Entity\ParagraphsType;
  * Implements hook_uninstall().
  */
 function s360_base_paragraphs_placeable_node_field_uninstall() {
-  // Ensure current user has permission to uninstall modules.
-  if (!\Drupal::currentUser()->hasPermission('administer modules')) {
-    throw new \Exception('Insufficient permissions to uninstall module.');
-  }
-
   $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
   $paragraph_bundle = 'placeable_node_field';
 
@@ -43,7 +38,7 @@ function s360_base_paragraphs_placeable_node_field_uninstall() {
     // Delete the Paragraph bundle.
     $paragraph_type->delete();
 
-    \Drupal::messenger()->addStatus(t('The Paragraph bundle "@bundle" has been deleted.', ['@bundle' => $paragraph_bundle]));
+    \Drupal::messenger()->addStatus(t('The Paragraph bundle "@bundle" has been deleted along with any content.', ['@bundle' => $paragraph_bundle]));
   }
 
   // Clear caches related to this module.
