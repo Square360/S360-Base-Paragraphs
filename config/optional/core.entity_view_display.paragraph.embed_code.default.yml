@@ -4,8 +4,6 @@ dependencies:
   config:
     - field.field.paragraph.embed_code.field_embedded_media
     - paragraphs.paragraphs_type.embed_code
-  module:
-    - double_field
 id: paragraph.embed_code.default
 targetEntityType: paragraph
 bundle: embed_code

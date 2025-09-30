@@ -15,14 +15,14 @@
     ],
     "require": {
         "drupal/advanced_header_field": "*",
-        "drupal/allowed_formats": "^3.0",
-        "drupal/double_field": "^4.1 || ^5.0" ,
-        "drupal/entity_usage": "^2.0@beta",
-        "drupal/field_group": "^3.4 || ^4",
-        "drupal/media_library_edit": "^3.0",
-        "drupal/paragraphs": "^1.0",
-        "drupal/viewsreference": "^2.0@beta",
-        "drupal/webform": "^6.1"
+        "drupal/allowed_formats": "*",
+        "drupal/double_field": "*" ,
+        "drupal/entity_usage": "*",
+        "drupal/field_group": "*",
+        "drupal/media_library_edit": "*",
+        "drupal/paragraphs": "*",
+        "drupal/viewsreference": "*",
+        "drupal/webform": "*"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
