@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * @file
+ * s360_base_paragraphs_placeable_node_field.module
+ */
+
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Implements hook_help().
+ */
+function s360_base_paragraphs_placeable_node_field_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.s360_base_paragraphs_placeable_node_field':
+      return '';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function s360_base_paragraphs_placeable_node_field_theme() {
+  return [
+    'paragraph__placeable_node_field' => [
+      'base hook' => 'paragraph',
+      'template' => 'paragraph--placeable-node-field',
+    ],
+    'paragraph__placeable_node_field__preview' => [
+      'base hook' => 'paragraph',
+      'template' => 'paragraph--placeable-node-field--preview',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for 'field_config_edit_form'.
+ */
+function s360_base_paragraphs_placeable_node_field_form_field_config_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
+  if ($form['#entity'] instanceof Node) {
+    \Drupal::service('s360_base_paragraphs_placeable_node_field.config_form_builder')->addToEntityForm($form, $form_state, $form_id);
+  }
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for 'base_field_override_edit_form'.
+ */
+function s360_base_paragraphs_placeable_node_field_form_base_field_override_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
+  if ($form['#entity'] instanceof Node) {
+    \Drupal::service('s360_base_paragraphs_placeable_node_field.config_form_builder')->addToEntityForm($form, $form_state, $form_id);
+  }
+}
+
+/**
+ * Allowed values callback for field_node_field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field storage definition.
+ * @param \Drupal\paragraphs\Entity\Paragraph|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of valid values in the form:
+ *   - option_key => option_value
+ */
+function s360_base_paragraphs_placeable_node_field_field_node_field_allowed_values(FieldStorageDefinitionInterface $definition, ?Paragraph $entity = NULL, &$cacheable = TRUE) {
+  $options = [];
+
+  /** @var Drupal\layout_paragraphs\LayoutParagraphsLayout $paragraphs_layout */
+  $paragraphs_layout = $entity?->_layoutParagraphsLayout;
+
+  /** @var Drupal\node\Entity\Node $node */
+  $node = $paragraphs_layout?->getEntity();
+  $node_bundle = $node?->bundle();
+
+  if (!$node_bundle) {
+    return [];
+  }
+
+  // Get the entity field manager service.
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+
+  // Get all field definitions for the node entity type and bundle.
+  $field_definitions = $entity_field_manager->getFieldDefinitions('node', $node_bundle);
+
+  foreach ($field_definitions as $field_name => $field_definition) {
+    // Skip base fields - we only want configurable fields (user-added).
+    if (!$field_definition instanceof FieldConfig) {
+      continue;
+    }
+
+    // Get the field configuration.
+    $field_config = FieldConfig::loadByName('node', $node_bundle, $field_name);
+
+    if ($field_config) {
+      if ($field_config->getThirdPartySetting('s360_base_paragraphs_placeable_node_field', 'is_placeable')) {
+        $options[$field_name] = $field_config->label();
+      }
+    }
+  }
+
+  return $options;
+}

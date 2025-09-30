@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\s360_base_paragraphs\Plugin\Field\FieldFormatter;
+namespace Drupal\s360_base_paragraphs_placeable_node_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
- * Plugin implementation of the 's360_base_paragraphs' placed field formatter.
+ * Plugin implementation of the 'rendered node field' formatter.
  *
  * @FieldFormatter(
  *   id = "s360_base_paragraphs_rendered_node_field",
@@ -20,7 +20,7 @@ use Drupal\node\Entity\Node;
  *   }
  * )
  */
-class S360BaseParagraphsPlacedFieldFormatter extends FormatterBase {
+class S360BaseParagraphsRenderedNodeFieldFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -41,7 +41,7 @@ class S360BaseParagraphsPlacedFieldFormatter extends FormatterBase {
 
     // Pre-load entities to avoid N+1 queries.
     $paragraph = $items->getEntity();
-    $node = $paragraph instanceof Paragraph ? $paragraph->getParentEntity() : null;
+    $node = $paragraph instanceof Paragraph ? $paragraph->getParentEntity() : NULL;
 
     if (!$node instanceof Node) {
       return [];
@@ -63,7 +63,7 @@ class S360BaseParagraphsPlacedFieldFormatter extends FormatterBase {
   protected function viewElement(FieldItemInterface $item, Node $node, array $node_fields): array {
     $field_machine_name = $item->getValue()['value'];
 
-    // Check if field exists using cached definitions
+    // Check if field exists using cached definitions.
     if (!isset($node_fields[$field_machine_name])) {
       return $this->buildErrorElement($field_machine_name);
     }

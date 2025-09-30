@@ -5,14 +5,14 @@ dependencies:
     - field.field.paragraph.placeable_node_field.field_node_field
     - paragraphs.paragraphs_type.placeable_node_field
   module:
-    - options
+    - s360_base_paragraphs
 id: paragraph.placeable_node_field.default
 targetEntityType: paragraph
 bundle: placeable_node_field
 mode: default
 content:
   field_node_field:
-    type: list_key
+    type: s360_base_paragraphs_rendered_node_field
     label: hidden
     settings: {  }
     third_party_settings: {  }

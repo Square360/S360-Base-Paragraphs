@@ -1,0 +1,7 @@
+name: 'S360 Base Paragraphs Placeable Node Field'
+description: 'Allows node fields to be placeable in layouts using paragraphs.'
+type: module
+package: 'Paragraphs'
+dependencies:
+  - s360_baes_paragraphs:s360_baes_paragraphs
+core_version_requirement: ^10 || ^11

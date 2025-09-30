@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\s360_base_paragraphs;
+namespace Drupal\s360_base_paragraphs_placeable_node_field;
 
 use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Field\FieldConfigInterface;
@@ -45,13 +45,13 @@ class ConfigFormBuilder {
    * @param string $form_id
    *   The form id.
    */
-  public function addIsPlaceableFieldToEntityForm(array &$form, FormStateInterface $form_state, string $form_id): void {
+  public function addToEntityForm(array &$form, FormStateInterface $form_state, string $form_id): void {
     $form_object = $form_state->getFormObject();
     assert($form_object instanceof EntityFormInterface);
 
     /** @var \Drupal\field\Entity\FieldConfig $field_config */
     $field_config = $form_object->getEntity();
-    $settings = $field_config->getThirdPartySettings('s360_base_paragraphs');
+    $settings = $field_config->getThirdPartySettings('s360_base_paragraphs_placeable_node_field');
 
     $form['is_placeable'] = [
       '#type' => 'checkbox',
@@ -62,7 +62,7 @@ class ConfigFormBuilder {
 
     $form['#entity_builders'][] = [
       $this,
-      'assignIsPlaceableFieldThirdPartySettingsToEntity',
+      'assignFieldThirdPartySettingsToEntity',
     ];
   }
 
@@ -78,9 +78,9 @@ class ConfigFormBuilder {
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The current state of the form.
    */
-  public function assignIsPlaceableFieldThirdPartySettingsToEntity(string $entity_type, FieldConfigInterface $field_config, array &$form, FormStateInterface $form_state): void {
+  public function assignFieldThirdPartySettingsToEntity(string $entity_type, FieldConfigInterface $field_config, array &$form, FormStateInterface $form_state): void {
     $field_config->setThirdPartySetting(
-      's360_base_paragraphs',
+      's360_base_paragraphs_placeable_node_field',
       'is_placeable',
       $form_state->getValue('is_placeable')
     );

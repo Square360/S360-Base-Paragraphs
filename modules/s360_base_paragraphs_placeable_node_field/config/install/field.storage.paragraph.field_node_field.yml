@@ -9,8 +9,8 @@ field_name: field_node_field
 entity_type: paragraph
 type: list_string
 settings:
+  allowed_values_function: s360_base_paragraphs_placeable_node_field_field_node_field_allowed_values
   allowed_values: {  }
-  allowed_values_function: s360_base_paragraphs_field_node_field_allowed_values
 module: options
 locked: true
 cardinality: 1
