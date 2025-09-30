@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.placeable_node_field.field_node_field
+    - paragraphs.paragraphs_type.placeable_node_field
+  module:
+    - layout_builder
+    - options
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: paragraph.placeable_node_field.preview
+targetEntityType: paragraph
+bundle: placeable_node_field
+mode: preview
+content:
+  field_node_field:
+    type: list_default
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

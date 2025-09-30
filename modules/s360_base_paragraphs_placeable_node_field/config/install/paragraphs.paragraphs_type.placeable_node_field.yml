@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: placeable_node_field
+label: 'Placeable Node Field'
+icon_uuid: null
+icon_default: null
+description: 'Allows fields on a node bundle to placed in layouts.'
+behavior_plugins: {  }

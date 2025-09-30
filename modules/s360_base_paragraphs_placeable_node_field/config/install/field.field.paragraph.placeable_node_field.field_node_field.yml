@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_node_field
+    - paragraphs.paragraphs_type.placeable_node_field
+  module:
+    - options
+id: paragraph.placeable_node_field.field_node_field
+field_name: field_node_field
+entity_type: paragraph
+bundle: placeable_node_field
+label: 'Node Field'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

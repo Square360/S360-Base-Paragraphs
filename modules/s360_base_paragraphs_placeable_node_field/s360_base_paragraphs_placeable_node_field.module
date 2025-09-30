@@ -1,0 +1,186 @@
+<?php
+
+/**
+ * @file
+ * s360_base_paragraphs_placeable_node_field.module
+ */
+
+use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Field\FieldConfigInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Implements hook_help().
+ */
+function s360_base_paragraphs_placeable_node_field_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.s360_base_paragraphs_placeable_node_field':
+      return '';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function s360_base_paragraphs_placeable_node_field_theme() {
+  return [
+    'paragraph__placeable_node_field' => [
+      'base hook' => 'paragraph',
+      'template' => 'paragraph--placeable-node-field',
+    ],
+    'paragraph__placeable_node_field__preview' => [
+      'base hook' => 'paragraph',
+      'template' => 'paragraph--placeable-node-field--preview',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for 'field_config_edit_form'.
+ */
+function s360_base_paragraphs_placeable_node_field_form_field_config_edit_form_alter(array &$form, FormStateInterface $form_state, string $form_id) {
+  $form_object = $form_state->getFormObject();
+
+  // Validate form object type.
+  if (!$form_object instanceof EntityFormInterface) {
+    return;
+  }
+
+  /** @var \Drupal\field\Entity\FieldConfig $field_config */
+  $field_config = $form_object->getEntity();
+
+  // Only apply to node fields.
+  if (!$field_config || $field_config->getTargetEntityTypeId() !== 'node') {
+    return;
+  }
+
+  // Check user permissions.
+  if (!\Drupal::currentUser()->hasPermission('administer node fields')) {
+    return;
+  }
+
+  $settings = $field_config->getThirdPartySettings('s360_base_paragraphs_placeable_node_field');
+
+  $form['is_placeable'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Make this field placeable'),
+    '#default_value' => $settings['is_placeable'] ?? FALSE,
+    '#description' => t('When checked, this field will be placeable using the "Placeable Node Field" paragraph.'),
+  ];
+
+  $form['#entity_builders'][] = 's360_base_paragraphs_placeable_node_field_field_config_edit_form_builder';
+}
+
+/**
+ * Form builder for the field config edit form.
+ *
+ * @see s360_base_paragraphs_placeable_node_field_form_field_config_edit_form_alter
+ */
+function s360_base_paragraphs_placeable_node_field_field_config_edit_form_builder(string $entity_type, FieldConfigInterface $field_config, array &$form, FormStateInterface $form_state) {
+  try {
+    $field_config->setThirdPartySetting(
+      's360_base_paragraphs_placeable_node_field',
+      'is_placeable',
+      $form_state->getValue('is_placeable')
+    );
+
+    // Make sure the cache for the node bundle is invalidated so the
+    // allowed_values function caching is reset.
+    \Drupal::service('cache_tags.invalidator')->invalidateTags(['node_type:' . $field_config->get('bundle')]);
+  }
+  catch (\Exception $e) {
+    \Drupal::logger('s360_base_paragraphs_placeable_node_field')->error(
+      'Failed to update field placeable setting: @message',
+      ['@message' => $e->getMessage()]
+    );
+  }
+}
+
+/**
+ * Allowed values callback for field_node_field.
+ *
+ * @param \Drupal\Core\Field\FieldStorageDefinitionInterface $definition
+ *   The field storage definition.
+ * @param \Drupal\paragraphs\Entity\Paragraph|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of valid values in the form:
+ *   - option_key => option_value
+ */
+function s360_base_paragraphs_placeable_node_field_field_node_field_allowed_values(FieldStorageDefinitionInterface $definition, ?Paragraph $entity = NULL, &$cacheable = TRUE) {
+  $options = [];
+
+  /** @var Drupal\layout_paragraphs\LayoutParagraphsLayout $paragraphs_layout */
+  $paragraphs_layout = $entity?->_layoutParagraphsLayout;
+
+  /** @var Drupal\node\Entity\Node $node */
+  $node = $paragraphs_layout?->getEntity();
+
+  // Validate that we have a proper node entity.
+  if (!$node instanceof Node) {
+    return [];
+  }
+
+  $node_bundle = $node->bundle();
+  if (!$node_bundle) {
+    return [];
+  }
+
+  // Create a cache ID based on the node bundle.
+  $cid = "s360_base_paragraphs_placeable_node_field:{$node_bundle}";
+
+  // Get the cache backend.
+  $cache = \Drupal::cache('data');
+
+  // Try to get cached data first.
+  $cached_data = $cache->get($cid);
+
+  if ($cached_data && !empty($cached_data->data)) {
+    return $cached_data->data;
+  }
+
+  // Get the entity field manager service.
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+
+  // Get all field definitions for the node entity type and bundle.
+  $field_definitions = $entity_field_manager->getFieldDefinitions('node', $node_bundle);
+
+  // Collect all field config IDs first to batch load them.
+  $field_config_ids = [];
+  foreach ($field_definitions as $field_name => $field_definition) {
+    // Skip base fields - we only want configurable fields (user-added).
+    if ($field_definition instanceof FieldConfig) {
+      $field_config_ids[] = "node.{$node_bundle}.{$field_name}";
+    }
+  }
+
+  // Batch load all field configs to avoid N+1 queries.
+  if (!empty($field_config_ids)) {
+    $field_configs = FieldConfig::loadMultiple($field_config_ids);
+
+    foreach ($field_configs as $field_config) {
+      if ($field_config->getThirdPartySetting('s360_base_paragraphs_placeable_node_field', 'is_placeable')) {
+        $field_name = $field_config->getName();
+        $options[$field_name] = $field_config->label();
+      }
+    }
+  }
+
+  // Cache the results with appropriate cache tags.
+  $cache_tags = [
+    "node_type:$node_bundle",
+  ];
+
+  // Cache for 1 hour (3600 seconds) or until cache tags are invalidated.
+  $cache->set($cid, $options, time() + 3600, $cache_tags);
+
+  return $options;
+}

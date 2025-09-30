@@ -1,0 +1,13 @@
+{% if not paragraph.isPublished() %}
+  {% set attributes = attributes.setAttribute('data-unpublished', 'paragraph') %}
+{% endif %}
+
+{% if not paragraph.isPublished() %}
+  <div{{ attributes }}>
+{% endif %}
+
+  {{ content.field_node_field }}
+
+{% if not paragraph.isPublished() %}
+  </div>
+{% endif %}

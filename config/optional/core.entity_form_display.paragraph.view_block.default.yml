@@ -11,11 +11,11 @@ dependencies:
     - viewsreference
 third_party_settings:
   field_group:
-    group_tabs_content_group:
+    group_tabs:
       children:
         - group_header
         - group_content
-      label: 'Tabs - Content Group'
+      label: 'Tabs'
       region: content
       parent_name: ''
       weight: 0
@@ -31,7 +31,7 @@ third_party_settings:
         - field_header
       label: Header
       region: content
-      parent_name: group_tabs_content_group
+      parent_name: group_tabs
       weight: 20
       format_type: tab
       format_settings:
@@ -46,7 +46,7 @@ third_party_settings:
         - field_view
       label: Content
       region: content
-      parent_name: group_tabs_content_group
+      parent_name: group_tabs
       weight: 21
       format_type: tab
       format_settings:
