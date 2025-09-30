@@ -10,17 +10,17 @@ use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
- * Plugin implementation of the 'rendered node field' formatter.
+ * Plugin implementation of the 'placeable node field' formatter.
  *
  * @FieldFormatter(
- *   id = "s360_base_paragraphs_rendered_node_field",
- *   label = @Translation("Default Rendered Node Field"),
+ *   id = "s360_base_paragraphs_placeable_node_field_rendered",
+ *   label = @Translation("Rendered Node Field"),
  *   field_types = {
  *     "list_string"
  *   }
  * )
  */
-class S360BaseParagraphsRenderedNodeFieldFormatter extends FormatterBase {
+class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
