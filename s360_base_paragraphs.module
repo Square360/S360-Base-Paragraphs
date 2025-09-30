@@ -69,7 +69,7 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
     return;
   }
 
-  /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
 
   $field_view = $paragraph?->field_view?->getValue();
@@ -81,13 +81,18 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
 
   $field_view = reset($field_view);
 
+  // Check if required values exist to avoid unnecessary processing.
+  if (empty($field_view['target_id']) || empty($field_view['display_id'])) {
+    return;
+  }
+
   /** @var \Drupal\views\ViewExecutable $view */
   $view = Views::getView($field_view['target_id']);
 
   if ($view) {
     $view->setDisplay($field_view['display_id']);
     $view_display = $view->getDisplay();
-    $view_display_title = $view_display->display['display_title'];
+    $view_display_title = $view_display->display['display_title'] ?? $field_view['display_id'];
     $field_item_text = $view->storage->label() . " ($view_display_title)";
   }
   else {
@@ -147,8 +152,18 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
 
   $field_webform = reset($field_webform);
 
+  // Check if target_id exists before loading.
+  if (empty($field_webform['target_id'])) {
+    return;
+  }
+
   /** @var \Drupal\webform\Entity\Webform $webform */
   $webform = Webform::load($field_webform['target_id']);
+
+  // Add access check for webform.
+  if ($webform && !$webform->access('view')) {
+    $webform = NULL;
+  }
 
   $variables['content']['field_webform'] = [
     '#type' => 'html_tag',

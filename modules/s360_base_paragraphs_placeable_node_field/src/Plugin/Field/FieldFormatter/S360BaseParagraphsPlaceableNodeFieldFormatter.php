@@ -47,6 +47,11 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
       return [];
     }
 
+    // Check if current user has access to view this node.
+    if (!$node->access('view')) {
+      return [];
+    }
+
     // Cache field definitions for the node.
     $node_fields = $node->getFieldDefinitions();
 
@@ -74,6 +79,11 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
       return $this->buildErrorElement($field_machine_name);
     }
 
+    // Check field access for current user.
+    if (!$field->access('view')) {
+      return $this->buildErrorElement($field_machine_name, 'Access denied');
+    }
+
     return [
       '#type' => 'html_tag',
       '#tag' => 'div',
@@ -91,12 +101,13 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
   /**
    * Build error element for missing/empty fields.
    */
-  private function buildErrorElement(string $field_machine_name): array {
+  private function buildErrorElement(string $field_machine_name, string $reason = 'does not exist or its value is empty'): array {
     return [
       '#type' => 'inline_template',
-      '#template' => '<strong>{{ field_machine_name }}</strong> does not exist or its value is empty.',
+      '#template' => '<strong>{{ field_machine_name }}</strong> {{ reason }}.',
       '#context' => [
         'field_machine_name' => $field_machine_name,
+        'reason' => $reason,
       ],
     ];
   }
