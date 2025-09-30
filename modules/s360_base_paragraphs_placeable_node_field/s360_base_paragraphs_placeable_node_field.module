@@ -135,13 +135,13 @@ function s360_base_paragraphs_placeable_node_field_field_node_field_allowed_valu
   }
 
   // Create a cache ID based on the node bundle.
-  $cache_id = "s360_base_paragraphs_placeable_node_field:{$node_bundle}";
+  $cid = "s360_base_paragraphs_placeable_node_field:{$node_bundle}";
 
   // Get the cache backend.
   $cache = \Drupal::cache('data');
 
   // Try to get cached data first.
-  $cached_data = $cache->get($cache_id);
+  $cached_data = $cache->get($cid);
 
   if ($cached_data && !empty($cached_data->data)) {
     return $cached_data->data;
@@ -180,7 +180,7 @@ function s360_base_paragraphs_placeable_node_field_field_node_field_allowed_valu
   ];
 
   // Cache for 1 hour (3600 seconds) or until cache tags are invalidated.
-  $cache->set($cache_id, $options, time() + 3600, $cache_tags);
+  $cache->set($cid, $options, time() + 3600, $cache_tags);
 
   return $options;
 }
