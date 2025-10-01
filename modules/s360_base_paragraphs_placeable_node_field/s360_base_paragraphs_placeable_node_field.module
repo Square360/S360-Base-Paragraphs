@@ -35,7 +35,8 @@ function s360_base_paragraphs_placeable_node_field_theme() {
     ],
     'paragraph__placeable_node_field__preview' => [
       'base hook' => 'paragraph',
-      'template' => 'paragraph--placeable-node-field--preview',
+      'template' => 'paragraph',
+      'path' => \Drupal::service('extension.list.module')->getPath('paragraphs') . '/templates',
     ],
   ];
 }

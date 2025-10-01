@@ -6,12 +6,8 @@ dependencies:
     - field.field.paragraph.placeable_node_field.field_node_field
     - paragraphs.paragraphs_type.placeable_node_field
   module:
-    - layout_builder
     - options
-third_party_settings:
-  layout_builder:
-    enabled: false
-    allow_custom: false
+third_party_settings: {  }
 id: paragraph.placeable_node_field.preview
 targetEntityType: paragraph
 bundle: placeable_node_field
