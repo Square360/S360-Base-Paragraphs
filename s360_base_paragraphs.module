@@ -64,137 +64,131 @@ function s360_base_paragraphs_help($route_name, RouteMatchInterface $route_match
  * Implements hook_preprocess_paragraph() for view_block.
  */
 function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
-  // Not an admin route, do nothing.
-  if (!_s360_base_paragraphs_is_admin_route()) {
-    return;
-  }
+  if (_s360_base_paragraphs_is_admin_route()) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
 
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
+    $field_view = $paragraph?->field_view?->getValue();
 
-  $field_view = $paragraph?->field_view?->getValue();
+    // No field_view value, do nothing.
+    if (!$field_view) {
+      return;
+    }
 
-  // No field_view value, do nothing.
-  if (!$field_view) {
-    return;
-  }
+    $field_view = reset($field_view);
 
-  $field_view = reset($field_view);
+    // Check if required values exist to avoid unnecessary processing.
+    if (empty($field_view['target_id']) || empty($field_view['display_id'])) {
+      return;
+    }
 
-  // Check if required values exist to avoid unnecessary processing.
-  if (empty($field_view['target_id']) || empty($field_view['display_id'])) {
-    return;
-  }
+    /** @var \Drupal\views\ViewExecutable $view */
+    $view = Views::getView($field_view['target_id']);
 
-  /** @var \Drupal\views\ViewExecutable $view */
-  $view = Views::getView($field_view['target_id']);
+    if ($view) {
+      $view->setDisplay($field_view['display_id']);
+      $view_display = $view->getDisplay();
+      $view_display_title = $view_display->display['display_title'] ?? $field_view['display_id'];
+      $field_item_text = $view->storage->label() . " ($view_display_title)";
+    }
+    else {
+      $field_item_text = 'Problem loading the view.';
+    }
 
-  if ($view) {
-    $view->setDisplay($field_view['display_id']);
-    $view_display = $view->getDisplay();
-    $view_display_title = $view_display->display['display_title'] ?? $field_view['display_id'];
-    $field_item_text = $view->storage->label() . " ($view_display_title)";
-  }
-  else {
-    $field_item_text = 'Problem loading the view.';
-  }
-
-  $variables['content']['field_view'] = [
-    '#type' => 'html_tag',
-    '#tag' => 'div',
-    '#attributes' => [
-      'class' => [
-        'field',
-        'field--name-field-view',
-        'field--type-string',
-        'field--label-inline',
-      ],
-    ],
-    'child' => [
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => 'View',
-        '#attributes' => [
-          'class' => 'field__label',
+    $variables['content']['field_view'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'field',
+          'field--name-field-view',
+          'field--type-string',
+          'field--label-inline',
         ],
       ],
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $field_item_text,
-        '#attributes' => [
-          'class' => 'field__item',
+      'child' => [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => 'View',
+          '#attributes' => [
+            'class' => 'field__label',
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $field_item_text,
+          '#attributes' => [
+            'class' => 'field__item',
+          ],
         ],
       ],
-    ],
-  ];
+    ];
+  }
 }
 
 /**
  * Implements hook_preprocess_paragraph() for webform.
  */
 function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
-  // Not an admin route, do nothing.
   if (!_s360_base_paragraphs_is_admin_route()) {
-    return;
-  }
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['paragraph'];
 
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['paragraph'];
+    $field_webform = $paragraph?->field_webform?->getValue();
 
-  $field_webform = $paragraph?->field_webform?->getValue();
+    // No field_webform value, do nothing.
+    if (!$field_webform) {
+      return;
+    }
 
-  // No field_webform value, do nothing.
-  if (!$field_webform) {
-    return;
-  }
+    $field_webform = reset($field_webform);
 
-  $field_webform = reset($field_webform);
+    // Check if target_id exists before loading.
+    if (empty($field_webform['target_id'])) {
+      return;
+    }
 
-  // Check if target_id exists before loading.
-  if (empty($field_webform['target_id'])) {
-    return;
-  }
+    /** @var \Drupal\webform\Entity\Webform $webform */
+    $webform = Webform::load($field_webform['target_id']);
 
-  /** @var \Drupal\webform\Entity\Webform $webform */
-  $webform = Webform::load($field_webform['target_id']);
+    // Add access check for webform.
+    if ($webform && !$webform->access('view')) {
+      $webform = NULL;
+    }
 
-  // Add access check for webform.
-  if ($webform && !$webform->access('view')) {
-    $webform = NULL;
-  }
-
-  $variables['content']['field_webform'] = [
-    '#type' => 'html_tag',
-    '#tag' => 'div',
-    '#attributes' => [
-      'class' => [
-        'field',
-        'field--name-field-webform',
-        'field--type-string',
-        'field--label-inline',
-      ],
-    ],
-    'child' => [
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => 'Webform',
-        '#attributes' => [
-          'class' => 'field__label',
+    $variables['content']['field_webform'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'field',
+          'field--name-field-webform',
+          'field--type-string',
+          'field--label-inline',
         ],
       ],
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#value' => $webform?->label() ?? 'Problem loading the webform.',
-        '#attributes' => [
-          'class' => 'field__item',
+      'child' => [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => 'Webform',
+          '#attributes' => [
+            'class' => 'field__label',
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => $webform?->label() ?? 'Problem loading the webform.',
+          '#attributes' => [
+            'class' => 'field__item',
+          ],
         ],
       ],
-    ],
-  ];
+    ];
+  }
 }
 
 /**
@@ -204,12 +198,18 @@ function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
  *   Returns true if the current route is found in the array, false otherwise.
  */
 function _s360_base_paragraphs_is_admin_route() {
-  return in_array(Drupal::routeMatch()->getRouteName(), [
+  $admin_paths = [
     'node.add',
     'entity.node.edit_form',
     'entity.group.edit_form',
-    'layout_paragraphs.builder.choose_component',
-    'layout_paragraphs.builder.edit_item',
-    'layout_paragraphs.builder.insert',
-  ]);
+    'layout_paragraphs.*',
+  ];
+
+  $url = Drupal::routeMatch()->getRouteName();
+
+  $result = array_filter($admin_paths, function ($v) use ($url) {
+    return preg_match('~' . $v . '~', $url);
+  });
+
+  return count($result) ? TRUE : FALSE;
 }
