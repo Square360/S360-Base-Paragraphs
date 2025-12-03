@@ -14,7 +14,7 @@ bundle: webform
 mode: preview
 content:
   field_header:
-    type: advanced_header_field_string
+    type: advanced_header_field_summary
     label: hidden
     settings: {  }
     third_party_settings: {  }
