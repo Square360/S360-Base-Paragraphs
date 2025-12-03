@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Install, update and uninstall functions for s360_base_paragraphs_placeable_node_field module.
+ * Install, update and uninstall functions.
  */
 
 use Drupal\paragraphs\Entity\Paragraph;

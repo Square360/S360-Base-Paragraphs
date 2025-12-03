@@ -22,7 +22,7 @@ content:
     weight: 1
     region: content
   field_header:
-    type: advanced_header_field_string
+    type: advanced_header_field_summary
     label: inline
     settings: {  }
     third_party_settings: {  }
