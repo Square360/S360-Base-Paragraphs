@@ -132,7 +132,7 @@ function s360_base_paragraphs_preprocess_paragraph__view_block(&$variables) {
  * Implements hook_preprocess_paragraph() for webform.
  */
 function s360_base_paragraphs_preprocess_paragraph__webform(&$variables) {
-  if (!_s360_base_paragraphs_is_admin_route()) {
+  if (_s360_base_paragraphs_is_admin_route()) {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $variables['paragraph'];
 
