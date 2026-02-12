@@ -40,16 +40,23 @@ class S360BaseParagraphsHelper {
       'node.add',
       'entity.node.edit_form',
       'entity.group.edit_form',
-      'layout_paragraphs.*',
+      'layout_paragraphs',
     ];
 
-    $url = \Drupal::routeMatch()->getRouteName();
+    $route_name = \Drupal::routeMatch()->getRouteName();
 
-    $result = array_filter($admin_paths, function ($v) use ($url) {
-      return preg_match('~' . $v . '~', $url);
-    });
+    if (empty($route_name)) {
+      return FALSE;
+    }
 
-    return count($result) ? TRUE : FALSE;
+    // Check each pattern and return immediately on first match.
+    foreach ($admin_paths as $pattern) {
+      if (str_starts_with($route_name, $pattern)) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
   }
 
 }

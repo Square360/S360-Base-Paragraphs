@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\s360_base_paragraphs\Hook;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -18,6 +19,10 @@ use Drupal\webform\Entity\Webform;
 final class S360BaseParagraphsHooks {
 
   use StringTranslationTrait;
+
+  public function __construct(
+    protected readonly ConfigFactoryInterface $configFactory
+  ) {}
 
   /**
    * Implements hook_help().
@@ -51,7 +56,7 @@ final class S360BaseParagraphsHooks {
         $output .= '<dl>';
 
         foreach ($paragraphs as $paragraph_key => $paragraph_label) {
-          $paragraph_config = \Drupal::config("paragraphs.paragraphs_type.$paragraph_key");
+          $paragraph_config = $this->configFactory->get("paragraphs.paragraphs_type.$paragraph_key");
 
           // The paragraph is still configured (not deleted).
           if (!empty($paragraph_config->getRawData())) {
@@ -82,11 +87,11 @@ final class S360BaseParagraphsHooks {
 
     switch ($paragraph_bundle) {
       case 'view_block':
-        self::viewBlock($variables, $paragraph);
+        $this->viewBlock($variables, $paragraph);
         break;
 
       case 'webform':
-        self::webform($variables, $paragraph);
+        $this->webform($variables, $paragraph);
         break;
     }
   }
@@ -105,40 +110,41 @@ final class S360BaseParagraphsHooks {
       return;
     }
 
-    // Paragraph doesn't have view field.
+    // Paragraph doesn't have the view field.
     if (!$paragraph->hasField('field_view')) {
       return;
     }
 
-    $field_view = $paragraph->get('field_view')->getValue();
+    $field_view = $paragraph->get('field_view');
 
-    // No view field value.
-    if (!$field_view) {
+    // The view field has no value.
+    if ($field_view->isEmpty()) {
       return;
     }
 
-    $field_view = reset($field_view);
+    $field_view_value = $field_view->first()?->getValue();
 
-    // No view target_id or display_id.
-    if (empty($field_view['target_id']) || empty($field_view['display_id'])) {
+    // There is no target_id or display_id.
+    if (empty($field_view_value['target_id']) || empty($field_view_value['display_id'])) {
       return;
     }
 
     /** @var \Drupal\views\ViewExecutable|null $view */
-    $view = Views::getView($field_view['target_id']);
+    $view = Views::getView($field_view_value['target_id']);
 
-    // Default message is something goes wrong loading the view/display.
-    $field_item_text = 'Problem loading the view.';
-
-    // View doesn't exist or can't be loaded.
+    // Determine the field item text based on view existence and access.
     if (!$view) {
-      return;
+      $field_item_text = 'View not found: ' . $field_view_value['target_id'];
     }
-
-    $view->setDisplay($field_view['display_id']);
-    $view_display = $view->getDisplay();
-    $view_display_title = $view_display->display['display_title'] ?? $field_view['display_id'];
-    $field_item_text = $view->storage->label() . " ($view_display_title)";
+    elseif (!$view->access($field_view_value['display_id'])) {
+      $field_item_text = 'Access denied to view: ' . $field_view_value['target_id'] . '(' . $field_view_value['display_id'] . ')';
+    }
+    else {
+      $view->setDisplay($field_view_value['display_id']);
+      $view_display = $view->getDisplay();
+      $view_display_title = $view_display->display['display_title'] ?? $field_view_value['display_id'];
+      $field_item_text = $view->storage->label() . " ($view_display_title)";
+    }
 
     $variables['content']['field_view'] = [
       '#type' => 'html_tag',
@@ -191,32 +197,31 @@ final class S360BaseParagraphsHooks {
       return;
     }
 
-    $field_webform = $paragraph?->get('field_webform')->getValue();
+    $field_webform = $paragraph?->get('field_webform');
 
     // No webform field value.
-    if (!$field_webform) {
+    if ($field_webform->isEmpty()) {
       return;
     }
 
-    $field_webform = reset($field_webform);
+    $field_webform_value = $field_webform->first()?->getValue();
 
     // No webform target_id.
-    if (empty($field_webform['target_id'])) {
+    if (empty($field_webform_value['target_id'])) {
       return;
     }
 
     /** @var \Drupal\webform\WebformInterface|null $webform */
-    $webform = Webform::load($field_webform['target_id']);
+    $webform = Webform::load($field_webform_value['target_id']);
 
-    // No access to webform.
-    if ($webform && !$webform->access('view')) {
-      return;
+    // Determine the field item text based on webform existence and access.
+    if (!$webform) {
+      $field_item_text = 'Webform not found: ' . $field_webform_value['target_id'];
     }
-
-    // Default message if something goes wrong loading the webform.
-    $field_item_text = 'Problem loading the webform.';
-
-    if ($webform) {
+    elseif (!$webform->access('view')) {
+      $field_item_text = 'Access denied to webform: ' . $webform->label();
+    }
+    else {
       $field_item_text = $webform->label();
     }
 

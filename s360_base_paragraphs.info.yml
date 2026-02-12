@@ -19,4 +19,4 @@ dependencies:
   - viewsreference:viewsreference
   - webform:webform
   - webform:webform_ui
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^11 || ^12

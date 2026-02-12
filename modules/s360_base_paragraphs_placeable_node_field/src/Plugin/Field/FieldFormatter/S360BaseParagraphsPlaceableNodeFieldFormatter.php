@@ -2,25 +2,24 @@
 
 namespace Drupal\s360_base_paragraphs_placeable_node_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\node\Entity\Node;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Plugin implementation of the 'placeable node field' formatter.
- *
- * @FieldFormatter(
- *   id = "s360_base_paragraphs_placeable_node_field_rendered",
- *   label = @Translation("Rendered Node Field"),
- *   field_types = {
- *     "list_string"
- *   }
- * )
  */
-class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
+#[FieldFormatter(
+  id: 's360_base_paragraphs_placeable_node_field_rendered',
+  label: new TranslatableMarkup('Rendered Node Field'),
+  field_types: ['list_string'],
+)]
+final class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
