@@ -3,15 +3,15 @@
     "description": "Square360 Base Paragraphs",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
+    "keywords": [
+        "Drupal",
+        "Paragraph"
+    ],
     "repositories": [
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    ],
-    "keywords": [
-        "Drupal",
-        "Paragraph"
     ],
     "require": {
         "drupal/advanced_header_field": "*",
@@ -31,14 +31,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "extra": {
-        "installer-name": "s360_base_paragraphs",
-        "installer-paths": {
-            "web/modules/contrib/{$name}": [
-                "type:drupal-module"
-            ]
-        }
-    },
     "scripts": {
         "code-sniff": [
             "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=vendor .",
@@ -46,9 +38,6 @@
         ]
     },
     "config": {
-        "platform": {
-            "php": "8.1.13"
-        },
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false
         },
