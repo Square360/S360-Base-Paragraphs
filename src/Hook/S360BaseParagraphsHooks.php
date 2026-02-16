@@ -20,15 +20,24 @@ final class S360BaseParagraphsHooks {
 
   use StringTranslationTrait;
 
+  /**
+   * Hook implementations for s360_base_paragraphs.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   The config factory service.
+   * @param \Drupal\s360_base_paragraphs\S360BaseParagraphsHelper $s360BaseParagraphsHelper
+   *   The S360 Base Paragraph Helper service.
+   */
   public function __construct(
-    protected readonly ConfigFactoryInterface $configFactory
+    private readonly ConfigFactoryInterface $configFactory,
+    private readonly S360BaseParagraphsHelper $s360BaseParagraphsHelper,
   ) {}
 
   /**
    * Implements hook_help().
    */
   #[Hook('help')]
-  public function help(string $route_name, RouteMatchInterface $route_match) {
+  public function help(string $route_name, RouteMatchInterface $route_match): string|null {
     switch ($route_name) {
       case 'help.page.s360_base_paragraphs':
         $paragraphs = [
@@ -74,6 +83,8 @@ final class S360BaseParagraphsHooks {
 
         return $output;
     }
+
+    return NULL;
   }
 
   /**
@@ -104,9 +115,9 @@ final class S360BaseParagraphsHooks {
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The Views Reference paragraph entity.
    */
-  private static function viewBlock(array &$variables, ParagraphInterface $paragraph): void {
+  private function viewBlock(array &$variables, ParagraphInterface $paragraph): void {
     // Not an Admin route.
-    if (!S360BaseParagraphsHelper::isAdminRoute()) {
+    if (!$this->s360BaseParagraphsHelper->isEditContext()) {
       return;
     }
 
@@ -186,9 +197,9 @@ final class S360BaseParagraphsHooks {
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The Webform paragraph entity.
    */
-  private static function webform(array &$variables, ParagraphInterface $paragraph): void {
+  private function webform(array &$variables, ParagraphInterface $paragraph): void {
     // Not an Admin route.
-    if (!S360BaseParagraphsHelper::isAdminRoute()) {
+    if (!$this->s360BaseParagraphsHelper->isEditContext()) {
       return;
     }
 

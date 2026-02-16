@@ -4,59 +4,57 @@ declare(strict_types=1);
 
 namespace Drupal\s360_base_paragraphs;
 
+use Drupal\Core\Routing\RouteMatchInterface;
 use Psr\Log\LoggerInterface;
 
-class S360BaseParagraphsHelper {
+/**
+ * Helper class for s360 base paragraphs operations.
+ */
+final class S360BaseParagraphsHelper {
 
   /**
-   * The logger instance.
+   * Construct an S360BaseParagraphsHelper service.
    *
-   * @var \Psr\Log\LoggerInterface|null
+   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
+   *   The route match service.
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger service.
    */
-  private static ?LoggerInterface $logger = NULL;
+  private function __construct(
+    private readonly RouteMatchInterface $routeMatch,
+    private LoggerInterface $logger,
+  ) {}
 
   /**
-   * Gets the logger instance for the s360_base_theme theme.
+   * Checks if the current route is an edit context.
    *
-   * Lazy-loads and returns a logger instance for this themes channel.
-   * Uses a static property to ensure only one logger instance is created.
-   */
-  public static function logger(): LoggerInterface {
-    if (self::$logger === NULL) {
-      self::$logger = \Drupal::logger('s360_base_paragraphs');
-    }
-
-    return self::$logger;
-  }
-
-  /**
-   * Checks the route name to see if it's an "admin route".
+   * This includes any entity edit form or layout_paragraphs route where
+   * layout paragraph content may be edited.
    *
    * @return bool
-   *   Returns true if the current route is found in the array, false otherwise.
+   *   TRUE if on an entity edit form or layout_paragraphs route.
    */
-  public static function isAdminRoute() {
-    $admin_paths = [
-      'node.add',
-      'entity.node.edit_form',
-      'entity.group.edit_form',
-      'layout_paragraphs',
-    ];
-
-    $route_name = \Drupal::routeMatch()->getRouteName();
+  public function isEditContext(): bool {
+    $route_name = $this->routeMatch->getRouteName();
 
     if (empty($route_name)) {
       return FALSE;
     }
 
-    // Check each pattern and return immediately on first match.
-    foreach ($admin_paths as $pattern) {
-      if (str_starts_with($route_name, $pattern)) {
-        return TRUE;
-      }
-    }
+    return (
+      str_contains($route_name, 'edit_form') ||
+      str_contains($route_name, 'layout_paragraphs')
+    );
+  }
 
-    return FALSE;
+  /**
+   * Gets the logger service.
+   *
+   * @return \Psr\Log\LoggerInterface
+   *   The logger service.
+   */
+  public function getLogger(): LoggerInterface {
+    return $this->logger;
   }
 
 }
