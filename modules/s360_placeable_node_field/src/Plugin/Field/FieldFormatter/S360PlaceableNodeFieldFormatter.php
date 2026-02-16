@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\s360_base_paragraphs_placeable_node_field\Plugin\Field\FieldFormatter;
+namespace Drupal\s360_placeable_node_field\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
@@ -15,11 +15,11 @@ use Drupal\paragraphs\Entity\Paragraph;
  * Plugin implementation of the 'placeable node field' formatter.
  */
 #[FieldFormatter(
-  id: 's360_base_paragraphs_placeable_node_field_rendered',
+  id: 's360_placeable_node_field_rendered',
   label: new TranslatableMarkup('Rendered Node Field'),
   field_types: ['list_string'],
 )]
-final class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
+class S360PlaceableNodeFieldFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}

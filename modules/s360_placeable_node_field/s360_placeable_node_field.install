@@ -11,7 +11,7 @@ use Drupal\paragraphs\Entity\ParagraphsType;
 /**
  * Implements hook_uninstall().
  */
-function s360_base_paragraphs_placeable_node_field_uninstall() {
+function s360_placeable_node_field_uninstall() {
   $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
   $paragraph_bundle = 'placeable_node_field';
 
@@ -42,5 +42,5 @@ function s360_base_paragraphs_placeable_node_field_uninstall() {
   }
 
   // Clear caches related to this module.
-  \Drupal::service('cache_tags.invalidator')->invalidateTags(['s360_base_paragraphs_placeable_node_field']);
+  \Drupal::service('cache_tags.invalidator')->invalidateTags(['s360_placeable_node_field']);
 }
