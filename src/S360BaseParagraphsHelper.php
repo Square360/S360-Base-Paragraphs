@@ -20,7 +20,7 @@ final class S360BaseParagraphsHelper {
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger service.
    */
-  private function __construct(
+  public function __construct(
     private readonly RouteMatchInterface $routeMatch,
     private LoggerInterface $logger,
   ) {}

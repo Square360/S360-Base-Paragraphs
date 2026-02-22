@@ -30,7 +30,7 @@ final class S360PlaceableNodeFieldHooks {
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user service.
    */
-  private function __construct(
+  public function __construct(
     private readonly ModuleExtensionList $moduleExtensionList,
     private readonly S360PlaceableNodeFieldHelper $s360PlaceableNodeFieldHelper,
     private readonly AccountProxyInterface $currentUser,
@@ -40,7 +40,7 @@ final class S360PlaceableNodeFieldHooks {
    * Implements hook_help().
    */
   #[Hook('help')]
-  public function help(string $route_name, RouteMatchInterface $route_match): string|null {
+  public function help(string $route_name, RouteMatchInterface $route_match): ?string {
     switch ($route_name) {
       case 'help.page.s360_placeable_node_field':
         return '';
@@ -71,7 +71,7 @@ final class S360PlaceableNodeFieldHooks {
    * Implements hook_form_BASE_FORM_ID_alter() for 'field_config_edit_form'.
    */
   #[Hook('form_field_config_edit_form_alter')]
-  public function formFieldConfigEditFormAlter(array &$form, FormStateInterface $form_state, string $form_id) {
+  public function formFieldConfigEditFormAlter(array &$form, FormStateInterface $form_state, string $form_id): void {
     $form_object = $form_state->getFormObject();
 
     // Validate form object type.
@@ -88,7 +88,7 @@ final class S360PlaceableNodeFieldHooks {
     }
 
     // Check user permissions.
-    if ($this->currentUser->hasPermission('administer node fields')) {
+    if (!$this->currentUser->hasPermission('administer node fields')) {
       return;
     }
 

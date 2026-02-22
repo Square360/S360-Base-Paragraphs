@@ -8,7 +8,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\paragraphs\Entity\ParagraphInterface;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\s360_base_paragraphs\S360BaseParagraphsHelper;
 use Drupal\views\Views;
 use Drupal\webform\Entity\Webform;
@@ -92,7 +92,7 @@ final class S360BaseParagraphsHooks {
    */
   #[Hook('preprocess_paragraph')]
   public function preprocessParagraph(array &$variables): void {
-    /** @var \Drupal\paragraphs\Entity\ParagraphInterface $paragraph */
+    /** @var \Drupal\paragraphs\ParagraphInterface $paragraph */
     $paragraph = $variables['paragraph'];
     $paragraph_bundle = $paragraph->bundle();
 
