@@ -29,7 +29,7 @@ final class S360PlaceableNodeFieldHelper {
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger service.
    */
-  private function __construct(
+  public function __construct(
     private readonly CacheBackendInterface $cache,
     private readonly CacheTagsInvalidatorInterface $cacheTagsInvalidator,
     private LoggerInterface $logger,
@@ -75,11 +75,19 @@ final class S360PlaceableNodeFieldHelper {
    */
   public function fieldConfigEditFormBuilder(string $entity_type, FieldConfigInterface $field_config, array &$form, FormStateInterface $form_state) {
     try {
-      $field_config->setThirdPartySetting(
-        's360_placeable_node_field',
-        'is_placeable',
-        $form_state->getValue('is_placeable')
-      );
+      $is_placeable = $form_state->getValue('is_placeable');
+
+      if ($is_placeable) {
+        $field_config->setThirdPartySetting(
+          's360_placeable_node_field',
+          'is_placeable',
+          TRUE
+        );
+      }
+      else {
+        // Remove the third-party setting entirely when unchecked.
+        $field_config->unsetThirdPartySetting('s360_placeable_node_field', 'is_placeable');
+      }
 
       // Make sure the cache for the node bundle is invalidated so the
       // allowed_values function caching is reset.
