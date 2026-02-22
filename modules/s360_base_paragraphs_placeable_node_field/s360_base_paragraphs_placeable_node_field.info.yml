@@ -1,0 +1,7 @@
+name: 'S360 Base Paragraphs: Placeable Node Field (deprecated)'
+description: 'Deprecated - Use s360_placeable_field instead'
+type: module
+package: 'Paragraphs'
+dependencies:
+  - s360_base_paragraphs:s360_base_paragraphs
+core_version_requirement: ^10 || ^11

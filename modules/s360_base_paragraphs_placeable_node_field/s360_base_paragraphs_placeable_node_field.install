@@ -1,0 +1,63 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions.
+ */
+
+/**
+ * Enable replacement module s360_placeable_node_field.
+ */
+function s360_base_paragraphs_placeable_node_field_update_9001() {
+  // Enable the new module.
+  \Drupal::service('module_installer')->install(['s360_placeable_node_field']);
+
+  $config_factory = \Drupal::configFactory();
+  $migrated_field_count = 0;
+  $migrated_formatter_count = 0;
+
+  // Migrate third-party settings on field configs.
+  foreach ($config_factory->listAll('field.field.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $old_settings = $config->get('third_party_settings.s360_base_paragraphs_placeable_node_field');
+
+    if ($old_settings) {
+      // Copy to new module namespace.
+      $config->set('third_party_settings.s360_placeable_node_field', $old_settings);
+      $config->clear('third_party_settings.s360_base_paragraphs_placeable_node_field');
+      $config->save();
+      $migrated_field_count++;
+    }
+  }
+
+  // Migrate field formatters in entity view displays.
+  foreach ($config_factory->listAll('core.entity_view_display.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $content = $config->get('content');
+    $changed = FALSE;
+
+    if ($content) {
+      foreach ($content as $field_name => $field_config) {
+        if (isset($field_config['type']) && $field_config['type'] === 's360_base_paragraphs_placeable_node_field_rendered') {
+          $content[$field_name]['type'] = 's360_placeable_node_field_rendered';
+          $changed = TRUE;
+          $migrated_formatter_count++;
+        }
+      }
+
+      if ($changed) {
+        $config->set('content', $content);
+        $config->save();
+      }
+    }
+  }
+
+  drupal_flush_all_caches();
+
+  return t('Enabled s360_placeable_node_field and migrated @field_count field configuration(s) and @formatter_count formatter(s). You can now uninstall s360_base_paragraphs_placeable_node_field.',
+    [
+      '@field_count' => $migrated_field_count,
+      '@formatter_count' => $migrated_formatter_count,
+    ]
+  );
+}
