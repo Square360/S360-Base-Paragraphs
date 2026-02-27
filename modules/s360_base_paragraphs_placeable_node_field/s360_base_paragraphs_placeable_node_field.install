@@ -5,42 +5,59 @@
  * Install, update and uninstall functions.
  */
 
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\paragraphs\Entity\ParagraphsType;
-
 /**
- * Implements hook_uninstall().
+ * Enable replacement module s360_placeable_node_field.
  */
-function s360_base_paragraphs_placeable_node_field_uninstall() {
-  $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
-  $paragraph_bundle = 'placeable_node_field';
+function s360_base_paragraphs_placeable_node_field_update_9001() {
+  // Enable the new module.
+  \Drupal::service('module_installer')->install(['s360_placeable_node_field']);
 
-  $paragraph_ids = $paragraph_storage->getQuery()
-    ->condition('type', $paragraph_bundle)
-    ->accessCheck(FALSE)
-    ->execute();
+  $config_factory = \Drupal::configFactory();
+  $migrated_field_count = 0;
+  $migrated_formatter_count = 0;
 
-  if (!empty($paragraph_ids)) {
-    $paragraphs = Paragraph::loadMultiple($paragraph_ids);
+  // Migrate third-party settings on field configs.
+  foreach ($config_factory->listAll('field.field.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $old_settings = $config->get('third_party_settings.s360_base_paragraphs_placeable_node_field');
 
-    // Delete existing entities in batches to avoid memory issues.
-    $chunks = array_chunk($paragraphs, 50);
-    foreach ($chunks as $chunk) {
-      $paragraph_storage->delete($chunk);
+    if ($old_settings) {
+      // Copy to new module namespace.
+      $config->set('third_party_settings.s360_placeable_node_field', $old_settings);
+      $config->clear('third_party_settings.s360_base_paragraphs_placeable_node_field');
+      $config->save();
+      $migrated_field_count++;
     }
   }
 
-  // Load the ParagraphsType configuration entity.
-  $paragraph_type = ParagraphsType::load($paragraph_bundle);
+  // Migrate field formatters in entity view displays.
+  foreach ($config_factory->listAll('core.entity_view_display.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $content = $config->get('content');
+    $changed = FALSE;
 
-  // Check if the bundle exists before attempting to delete it.
-  if ($paragraph_type) {
-    // Delete the Paragraph bundle.
-    $paragraph_type->delete();
+    if ($content) {
+      foreach ($content as $field_name => $field_config) {
+        if (isset($field_config['type']) && $field_config['type'] === 's360_base_paragraphs_placeable_node_field_rendered') {
+          $content[$field_name]['type'] = 's360_placeable_node_field_rendered';
+          $changed = TRUE;
+          $migrated_formatter_count++;
+        }
+      }
 
-    \Drupal::messenger()->addStatus(t('The Paragraph bundle "@bundle" has been deleted along with any content.', ['@bundle' => $paragraph_bundle]));
+      if ($changed) {
+        $config->set('content', $content);
+        $config->save();
+      }
+    }
   }
 
-  // Clear caches related to this module.
-  \Drupal::service('cache_tags.invalidator')->invalidateTags(['s360_base_paragraphs_placeable_node_field']);
+  drupal_flush_all_caches();
+
+  return t('Enabled s360_placeable_node_field and migrated @field_count field configuration(s) and @formatter_count formatter(s). You can now uninstall s360_base_paragraphs_placeable_node_field.',
+    [
+      '@field_count' => $migrated_field_count,
+      '@formatter_count' => $migrated_formatter_count,
+    ]
+  );
 }

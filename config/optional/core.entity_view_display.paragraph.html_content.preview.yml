@@ -23,8 +23,10 @@ content:
     region: content
   field_header:
     type: advanced_header_field_summary
-    label: inline
-    settings: {  }
+    label: hidden
+    settings:
+      show_subtitle: false
+      show_anchor_id: false
     third_party_settings: {  }
     weight: 0
     region: content

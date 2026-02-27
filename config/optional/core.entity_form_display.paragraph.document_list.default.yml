@@ -17,8 +17,7 @@ third_party_settings:
       children:
         - group_header
         - group_media
-        - group_options
-      label: 'Tabs'
+      label: Tabs
       region: content
       parent_name: ''
       weight: 0
@@ -80,6 +79,7 @@ content:
     third_party_settings:
       media_library_edit:
         show_edit: '1'
+        edit_form_mode: media_library
   field_header:
     type: advanced_header_field
     weight: 0

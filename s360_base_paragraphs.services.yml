@@ -1,0 +1,12 @@
+services:
+  s360_base_paragraphs.helper:
+    class: Drupal\s360_base_paragraphs\S360BaseParagraphsHelper
+    arguments:
+      - '@current_route_match'
+      - '@logger.channel.s360_base_paragraphs'
+  Drupal\s360_base_paragraphs\S360BaseParagraphsHelper: '@s360_base_paragraphs.helper'
+
+  logger.channel.s360_base_paragraphs:
+    parent: logger.channel_base
+    arguments: ['s360_base_paragraphs']
+    public: false
