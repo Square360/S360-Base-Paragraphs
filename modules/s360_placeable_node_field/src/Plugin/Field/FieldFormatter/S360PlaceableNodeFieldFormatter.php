@@ -1,26 +1,25 @@
 <?php
 
-namespace Drupal\s360_base_paragraphs_placeable_node_field\Plugin\Field\FieldFormatter;
+namespace Drupal\s360_placeable_node_field\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
-use Drupal\node\Entity\Node;
-use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\node\NodeInterface;
+use Drupal\paragraphs\ParagraphInterface;
 
 /**
  * Plugin implementation of the 'placeable node field' formatter.
- *
- * @FieldFormatter(
- *   id = "s360_base_paragraphs_placeable_node_field_rendered",
- *   label = @Translation("Rendered Node Field"),
- *   field_types = {
- *     "list_string"
- *   }
- * )
  */
-class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
+#[FieldFormatter(
+  id: 's360_placeable_node_field_rendered',
+  label: new TranslatableMarkup('Rendered Node Field'),
+  field_types: ['list_string'],
+)]
+class S360PlaceableNodeFieldFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -41,9 +40,9 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
 
     // Pre-load entities to avoid N+1 queries.
     $paragraph = $items->getEntity();
-    $node = $paragraph instanceof Paragraph ? $paragraph->getParentEntity() : NULL;
+    $node = $paragraph instanceof ParagraphInterface ? $paragraph->getParentEntity() : NULL;
 
-    if (!$node instanceof Node) {
+    if (!$node instanceof NodeInterface) {
       return [];
     }
 
@@ -65,7 +64,7 @@ class S360BaseParagraphsPlaceableNodeFieldFormatter extends FormatterBase {
   /**
    * Render a single field item.
    */
-  protected function viewElement(FieldItemInterface $item, Node $node, array $node_fields): array {
+  protected function viewElement(FieldItemInterface $item, NodeInterface $node, array $node_fields): array {
     $field_machine_name = $item->getValue()['value'];
 
     // Check if field exists using cached definitions.

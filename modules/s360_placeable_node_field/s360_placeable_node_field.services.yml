@@ -1,0 +1,13 @@
+services:
+  s360_placeable_node_field.helper:
+    class: Drupal\s360_placeable_node_field\S360PlaceableNodeFieldHelper
+    arguments:
+      - '@cache.default'
+      - '@cache_tags.invalidator'
+      - '@logger.channel.s360_placeable_node_field'
+  Drupal\s360_placeable_node_field\S360PlaceableNodeFieldHelper: '@s360_placeable_node_field.helper'
+
+  logger.channel.s360_placeable_node_field:
+    parent: logger.channel_base
+    arguments: ['s360_placeable_node_field']
+    public: false
