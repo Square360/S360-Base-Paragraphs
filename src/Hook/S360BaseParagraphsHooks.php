@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\s360_base_paragraphs\Hook;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\s360_base_paragraphs\ParagraphsIconRepair;
 use Drupal\s360_base_paragraphs\S360BaseParagraphsHelper;
 use Drupal\views\Views;
 use Drupal\webform\Entity\Webform;
@@ -21,16 +24,35 @@ final class S360BaseParagraphsHooks {
   use StringTranslationTrait;
 
   /**
+   * State key holding the last paragraph icon repair check timestamp.
+   */
+  private const ICON_REPAIR_STATE_KEY = 's360_base_paragraphs.icon_repair_last_run';
+
+  /**
+   * Minimum seconds between paragraph icon repair checks.
+   */
+  private const ICON_REPAIR_INTERVAL = 86400;
+
+  /**
    * Hook implementations for s360_base_paragraphs.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   The config factory service.
    * @param \Drupal\s360_base_paragraphs\S360BaseParagraphsHelper $s360BaseParagraphsHelper
    *   The S360 Base Paragraph Helper service.
+   * @param \Drupal\s360_base_paragraphs\ParagraphsIconRepair $paragraphsIconRepair
+   *   The paragraph icon repair service.
+   * @param \Drupal\Core\State\StateInterface $state
+   *   The state service.
+   * @param \Drupal\Component\Datetime\TimeInterface $time
+   *   The time service.
    */
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     private readonly S360BaseParagraphsHelper $s360BaseParagraphsHelper,
+    private readonly ParagraphsIconRepair $paragraphsIconRepair,
+    private readonly StateInterface $state,
+    private readonly TimeInterface $time,
   ) {}
 
   /**
@@ -266,6 +288,31 @@ final class S360BaseParagraphsHooks {
         ],
       ],
     ];
+  }
+
+  /**
+   * Implements hook_cron().
+   *
+   * Paragraph type icon files live in the public files directory, which is not
+   * in version control and does not travel with a code deploy. A database
+   * clone therefore lands the icon file *entity* on an environment where the
+   * file's *bytes* do not exist, and every icon render 404s.
+   *
+   * An update hook cannot cover this: its schema version rides along in the
+   * cloned database, so it is recorded as already run. Cron is checked here
+   * instead, throttled to once a day, so any environment self-heals however
+   * its database arrived.
+   */
+  #[Hook('cron')]
+  public function cron(): void {
+    $last = (int) $this->state->get(self::ICON_REPAIR_STATE_KEY, 0);
+
+    if (($last + self::ICON_REPAIR_INTERVAL) > $this->time->getRequestTime()) {
+      return;
+    }
+
+    $this->state->set(self::ICON_REPAIR_STATE_KEY, $this->time->getRequestTime());
+    $this->paragraphsIconRepair->repair();
   }
 
 }
