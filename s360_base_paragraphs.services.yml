@@ -6,6 +6,14 @@ services:
       - '@logger.channel.s360_base_paragraphs'
   Drupal\s360_base_paragraphs\S360BaseParagraphsHelper: '@s360_base_paragraphs.helper'
 
+  s360_base_paragraphs.paragraphs_icon_repair:
+    class: Drupal\s360_base_paragraphs\ParagraphsIconRepair
+    arguments:
+      - '@entity_type.manager'
+      - '@file_system'
+      - '@logger.channel.s360_base_paragraphs'
+  Drupal\s360_base_paragraphs\ParagraphsIconRepair: '@s360_base_paragraphs.paragraphs_icon_repair'
+
   logger.channel.s360_base_paragraphs:
     parent: logger.channel_base
     arguments: ['s360_base_paragraphs']
