@@ -13,7 +13,7 @@ declare(strict_types=1);
 function s360_base_paragraphs_update_11001(): string {
   $result = \Drupal::service('s360_base_paragraphs.paragraphs_icon_repair')->repair();
 
-  return t('Paragraph type icons: @repaired repaired, @intact already intact, @skipped without an icon, @failed failed.', [
+  return (string) t('Paragraph type icons: @repaired repaired, @intact already intact, @skipped without an icon, @failed failed.', [
     '@repaired' => count($result['repaired']),
     '@intact' => count($result['intact']),
     '@skipped' => count($result['skipped']),
