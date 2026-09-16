@@ -11,7 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\State\StateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\ParagraphInterface;
-use Drupal\s360_base_paragraphs\ParagraphsIconRepair;
+use Drupal\s360_base_paragraphs\S360BaseParagraphsIconRepair;
 use Drupal\s360_base_paragraphs\S360BaseParagraphsHelper;
 use Drupal\views\Views;
 use Drupal\webform\Entity\Webform;
@@ -40,7 +40,7 @@ final class S360BaseParagraphsHooks {
    *   The config factory service.
    * @param \Drupal\s360_base_paragraphs\S360BaseParagraphsHelper $s360BaseParagraphsHelper
    *   The S360 Base Paragraph Helper service.
-   * @param \Drupal\s360_base_paragraphs\ParagraphsIconRepair $paragraphsIconRepair
+   * @param \Drupal\s360_base_paragraphs\S360BaseParagraphsIconRepair $paragraphsIconRepair
    *   The paragraph icon repair service.
    * @param \Drupal\Core\State\StateInterface $state
    *   The state service.
@@ -50,7 +50,7 @@ final class S360BaseParagraphsHooks {
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
     private readonly S360BaseParagraphsHelper $s360BaseParagraphsHelper,
-    private readonly ParagraphsIconRepair $paragraphsIconRepair,
+    private readonly S360BaseParagraphsIconRepair $paragraphsIconRepair,
     private readonly StateInterface $state,
     private readonly TimeInterface $time,
   ) {}

@@ -28,10 +28,10 @@ use Psr\Log\LoggerInterface;
  * This service detects that state and repairs it by removing the stale entity
  * so Paragraphs regenerates the file from icon_default.
  */
-final class ParagraphsIconRepair {
+final class S360BaseParagraphsIconRepair {
 
   /**
-   * Constructs a ParagraphsIconRepair service.
+   * Constructs a S360BaseParagraphsIconRepair service.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.

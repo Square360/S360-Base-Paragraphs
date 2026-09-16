@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\s360_base_paragraphs\Drush\Commands;
 
-use Drupal\s360_base_paragraphs\ParagraphsIconRepair;
+use Drupal\s360_base_paragraphs\S360BaseParagraphsIconRepair;
 use Drush\Attributes as CLI;
 use Drush\Commands\AutowireTrait;
 use Drush\Commands\DrushCommands;
@@ -12,18 +12,18 @@ use Drush\Commands\DrushCommands;
 /**
  * Drush commands for repairing paragraph type icons.
  */
-final class ParagraphsIconRepairCommands extends DrushCommands {
+final class S360BaseParagraphsIconRepairCommands extends DrushCommands {
 
   use AutowireTrait;
 
   /**
-   * Constructs a ParagraphsIconRepairCommands object.
+   * Constructs a S360BaseParagraphsIconRepairCommands object.
    *
-   * @param \Drupal\s360_base_paragraphs\ParagraphsIconRepair $paragraphsIconRepair
+   * @param \Drupal\s360_base_paragraphs\S360BaseParagraphsIconRepair $paragraphsIconRepair
    *   The paragraph icon repair service.
    */
   public function __construct(
-    private readonly ParagraphsIconRepair $paragraphsIconRepair,
+    private readonly S360BaseParagraphsIconRepair $paragraphsIconRepair,
   ) {
     parent::__construct();
   }
