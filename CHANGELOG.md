@@ -1,3 +1,9 @@
+# Release 9.0.2 (2026-09-16)
+
+### Bug Fixes
+
+* cast update_11001 message to string to satisfy the declared return type (c645991)
+
 # Release 9.0.1 (2026-09-16)
 
 ### Bug Fixes
