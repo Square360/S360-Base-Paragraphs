@@ -213,3 +213,35 @@ function _s360_base_paragraphs_is_admin_route() {
 
   return count($result) ? TRUE : FALSE;
 }
+
+/**
+ * Implements hook_cron().
+ *
+ * Paragraph type icon files live in the public files directory, which is not
+ * in version control and does not travel with a code deploy. A database
+ * clone therefore lands the icon file *entity* on an environment where the
+ * file's *bytes* do not exist, and every icon render 404s.
+ *
+ * An update hook cannot cover this: its schema version rides along in the
+ * cloned database, so it is recorded as already run. Cron is checked here
+ * instead, throttled to once a day, so any environment self-heals however
+ * its database arrived.
+ *
+ * The state key and interval match the 9.x OOP implementation so an
+ * 8.x -> 9.x upgrade carries the throttle over without a double run.
+ */
+function s360_base_paragraphs_cron(): void {
+  $state_key = 's360_base_paragraphs.icon_repair_last_run';
+  $interval = 86400;
+
+  $state = \Drupal::state();
+  $now = \Drupal::time()->getRequestTime();
+  $last = (int) $state->get($state_key, 0);
+
+  if (($last + $interval) > $now) {
+    return;
+  }
+
+  $state->set($state_key, $now);
+  \Drupal::service('s360_base_paragraphs.paragraphs_icon_repair')->repair();
+}
